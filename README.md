@@ -1,4 +1,4 @@
-# MyBlog （毕业设计）
+# MyBlog （毕业设计）   Powered by YJB
 基于SpringBoot+MyBatis+Vue的前后端分离的在线博客项目（MarkDown编辑器）
 
 主要功能：注册、登录账号；编写、浏览、评论博客；可以对博客进行点赞、收藏，可以看到其他用户编写的博客，以及关注其他用户
