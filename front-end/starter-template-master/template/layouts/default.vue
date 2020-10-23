@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <header style="position:fixed;z-index:999;width:100%;background-color:white">
+      <header style="position:fixed;z-index:999;width:100%;min-width:1000px;background-color:white">
         <div style="height:60px;border-bottom:1px solid #DCDCDC">
           
           <div style="position:relative;float:left;left:25%">
@@ -51,61 +51,6 @@
             </div>
           </div>
         </div>
-        <!-- <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          active-text-color="#87CEEB"
-          background-color="#F0F8FF"
-        >
-          <div style="left:10%;position:relative;float:left"></div>
-
-          <el-menu-item index="1">发现</el-menu-item>
-          <el-menu-item index="2">消息</el-menu-item>
-
-          <div style="float:left;position:relative;top:10px;left:30%">
-            <div style="float:left;position:relative;">
-              <el-input v-model="input" placeholder="请输入内容" />
-            </div>
-            <div style="float:left;position:relative;left:10px">
-              <el-button icon="el-icon-search" circle />
-            </div>
-          </div>
-
-          <div style="float:left;position:relative;left:44%;top:10px">
-            <el-dropdown @command="handleWriteCommand">
-              <el-button type="primary" class="el-icon-edit">创作</el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item icon="el-icon-edit-outline" command="write">写博客</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-folder-opened" command="draft">草稿箱</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-
-          <div style="float:left;position:relative;left:45%;top:8px">
-            <div v-if="!accountInfo" :key="accountInfo.id">
-              <el-button type="text">
-                <a style="color:#808080;font-size:18px;" @click="login()">登录</a>
-                <el-divider direction="vertical" />
-                <a style="color:#808080;font-size:18px;" @click="regist()">注册</a>
-              </el-button>
-            </div>
-            <div v-if="accountInfo" :key="accountInfo.id">
-              <el-dropdown @command="handleAccountCommand">
-                <a href="/accountInfo">
-                  <el-avatar :size="40" :src="accountInfo.avatar" />
-                  <span id="userName" class="vam disIb">{{ accountInfo.nickname }}</span>
-                </a>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-s-home">我的主页</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-setting">设置</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-warning-outline" command="logout">退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </div>
-        </el-menu> -->
       </header>
     </div>
 

@@ -9,9 +9,9 @@
           </div>
         </div>
         <div style="left:3%;position:relative">
-          <router-link :to="{name: 'blog', query: {bid: index.blogId}}" style="text-decoration:none;color:black">
-            <h2>{{ index.blogTitle }}</h2>
-          </router-link>
+            <a :href="'/blog/' + index.blogId" style="text-decoration:none;color:black">
+              {{ index.blogTitle }}
+            </a>
           <p style="color:#808080;position:relative;top:10px;width:80%">{{ index.blogContent }}</p>
         </div>
         <div style="float:right;font-size:13px;">

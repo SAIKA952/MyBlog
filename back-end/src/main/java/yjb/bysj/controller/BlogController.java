@@ -62,8 +62,8 @@ public class BlogController {
 
             // 截取字符串
             String content = blogs.get(i).getContent();
-            if(blogs.get(i).getContent().length() >= 108) {
-                content = content.trim().substring(0, 108) + "...";
+            if(blogs.get(i).getContent().length() >= 100) {
+                content = content.trim().substring(0, 100) + "...";
             }
             index.setBlogContent(content);
 
