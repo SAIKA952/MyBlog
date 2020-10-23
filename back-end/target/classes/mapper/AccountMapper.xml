@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yjb.bysj.mapper.AccountMapper">
+
+    <resultMap type="yjb.bysj.entity.Account" id="AccountMap">
+
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="email" property="email" jdbcType="INTEGER" />
+        <result column="birthday" property="birthday" jdbcType="DATE" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="last_login" property="lastLogin" jdbcType="TIMESTAMP" />
+        <result column="create_on" property="createOn" jdbcType="TIMESTAMP" />
+        <result column="update_on" property="updateOn" jdbcType="TIMESTAMP" />
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, username, password, avatar, sex, email, birthday, status, last_login, create_on, update_on
+    </sql>
+
+    <select id="searchAllAccounts" resultType="java.util.List" resultMap="AccountMap">
+        select
+        <include refid="Base_Column_List"/>
+        from account
+    </select>
+
+<!--    用户注册-->
+    <insert id="userRegist" parameterType="yjb.bysj.entity.Account">
+        insert into account (username, password, phone, avatar, status, create_on, update_on)
+        values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{createOn,jdbcType=TIMESTAMP},#{createOn,jdbcType=TIMESTAMP})
+    </insert>
+
+<!--    检查用户名是否存在-->
+    <select id="isUsernameExist" resultType="java.lang.Integer">
+        select count(*) from account where username = #{username,jdbcType=VARCHAR}
+    </select>
+
+<!--    根据用户名获取账号信息-->
+    <select id="getAccountInfoByUsername" resultType="yjb.bysj.entity.Account">
+        select * from account where username = #{username,jdbcType=VARCHAR}
+    </select>
+
+<!--    根据id获取账号信息-->
+    <select id="getAccountInfoById" resultType="yjb.bysj.entity.Account">
+        select * from account where id = #{id,jdbcType=INTEGER}
+    </select>
+
+<!--    修改账号信息-->
+    <update id="updateAccount" parameterType="yjb.bysj.entity.Account">
+        update account set username = #{username}, phone = #{phone}, email = #{email}, sex = #{sex}, birthday = #{birthday}, update_on = #{updateOn} where id = #{id}
+    </update>
+
+<!--    修改密码-->
+    <update id="updateAccountPassword" parameterType="yjb.bysj.entity.Account">
+        update account set password = #{newPassword} where id = #{userId}
+    </update>
+
+<!--    修改用户头像-->
+    <update id="updateAvatarByUserId" parameterType="yjb.bysj.entity.Account">
+        update account set avatar = #{avatar} where id = #{userId}
+    </update>
+
+</mapper>

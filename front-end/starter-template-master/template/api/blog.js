@@ -1,0 +1,78 @@
+import request from '@/utils/request'
+
+export default {
+  // 博客提交
+  submitBlog(form) {
+    return request({
+      url: `/blog/submit`,
+      method: 'post',
+      data: form
+    })
+  },
+  // 查找所有博客
+  searchAll() {
+    return request({
+      url: `/blog/searchAll`,
+      method: 'get'
+    })
+  },
+  // 根据博客id查询博客信息
+  getBlogInfoById(blogId) {
+    return request({
+      url: `/blog/getBlogInfoById/${blogId}`,
+      method: 'get'
+    })
+  },
+  // 根据内容查询博客
+  searchContent(content) {
+    return request({
+      url: `/blog/search/${content}`,
+      method: 'get'
+    })
+  },
+  // 根据作者id查询所有博客
+  getBlogsByAuthorId(blog) {
+    return request({
+      url: `/blog/getBlogsByAuthorId`,
+      method: 'post',
+      data: blog
+    })
+  },
+  // 编辑博客数据回显
+  editBlog(id) {
+    return request({
+      url: `/blog/editBlog/${id}`,
+      method: 'get'
+    })
+  },
+  // 更新博客
+  updateBlog(form) {
+    return request({
+      url: `/blog/updateBlog`,
+      method: 'post',
+      data: form
+    })
+  },
+  // 删除博客
+  deleteBlog(form) {
+    return request({
+      url: `/blog/deleteBlog`,
+      method: 'post',
+      data: form
+    })
+  },
+  // 根据用户id查询该用户的所有博客
+  getAllBlogsByUserId(userId) {
+    return request({
+      url: `/blog/getAllBlogsByUserId/${userId}`,
+      method: 'get'
+    })
+  },
+  // 根据用户id查询该用户草稿箱里的博客
+  getDraftByUserId(id) {
+    return request({
+      url: `/blog/getDraftByUserId/${id}`,
+      method: 'get'
+    })
+  }
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yjb.bysj.mapper.BlogMapper">
+
+    <resultMap type="yjb.bysj.entity.Blog" id="BlogMap">
+
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="author_id" property="authorId" jdbcType="VARCHAR" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="views" property="views" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="version" property="version" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="create_on" property="createOn" jdbcType="TIMESTAMP" />
+        <result column="update_on" property="updateOn" jdbcType="TIMESTAMP" />
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, username, title, content, views, status, version, type, create_on, update_on
+    </sql>
+
+<!--    查询正常发布的所有博客-->
+    <select id="searchAll" resultType="java.util.List" resultMap="BlogMap">
+        select * from blog where status = 1 order by create_on desc
+    </select>
+
+<!--    博客提交-->
+    <insert id="submitBlog" parameterType="yjb.bysj.entity.Blog">
+        insert into blog(author_id, title, views, status, version, type, content, comments, likes, create_on, update_on)
+        values(#{authorId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{comments,jdbcType=INTEGER}, #{likes,jdbcType=INTEGER}, #{createOn,jdbcType=TIMESTAMP},#{updateOn,jdbcType=TIMESTAMP})
+    </insert>
+
+<!--    根据博客id查询博客信息-->
+    <select id="getBlogInfoById" resultType="yjb.bysj.entity.Blog" resultMap="BlogMap">
+        select * from blog where id = #{id}
+    </select>
+
+<!--    浏览博客的时候，浏览量自增1-->
+    <update id="addViews" parameterType="yjb.bysj.entity.Blog">
+        update blog set views = views + 1 where id = #{id}
+    </update>
+
+<!--    按照输入的内容进行查询-->
+    <select id="searchContent" resultType="java.util.List" resultMap="BlogMap">
+        select * from blog where content like "%"#{content}"%" or title like "%"#{title}"%"
+    </select>
+
+<!--    根据作者id查找作者的所有博客，按照浏览量降序排序-->
+    <select id="getBlogsByAuthorId" resultType="java.util.List" resultMap="BlogMap">
+        select * from blog where author_id = #{id} and id != #{currentBlogId} and status = 1 order by views desc
+    </select>
+
+<!--    修改博客-->
+    <update id="updateBlog" parameterType="yjb.bysj.entity.Blog">
+        update blog set title = #{title}, content = #{content}, version = version + 1,  update_on = #{updateOn}, status = #{status} where id = #{id}
+    </update>
+
+<!--    删除博客，实际上是将status改为-1-->
+    <update id="deleteBlog" parameterType="yjb.bysj.entity.Blog">
+        update blog set status = -1 where id = #{id}
+    </update>
+
+<!--    根据博客id查询该博客的评论数-->
+    <select id="getCommentsByBlogId" resultMap="BlogMap">
+        select comments from blog where id = #{id}
+    </select>
+
+<!--    根据用户id查找该用户的所有博客，按照浏览量降序排序-->
+    <select id="getAllBlogsByUserId" resultType="java.util.List" resultMap="BlogMap">
+        select * from blog where author_id = #{id} and status = 1 order by views desc
+    </select>
+
+<!--    根据用户id查询该用户草稿箱里的博客-->
+    <select id="getDraftByUserId" resultType="yjb.bysj.entity.Blog" resultMap="BlogMap">
+        select * from blog where author_id = #{userId} and status = 0
+    </select>
+
+<!--    根据用户id获取该用户写的博客数量-->
+    <select id="getBlogCountByUserId" resultType="java.lang.Integer">
+        select count(*) from blog where author_id = #{userId} and status = 1
+    </select>
+
+</mapper>

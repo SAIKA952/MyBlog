@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yjb.bysj.mapper.FollowMapper">
+
+    <resultMap type="yjb.bysj.entity.Follow" id="FollowMap">
+
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="follow_id" property="followId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_on" property="createOn" jdbcType="TIMESTAMP" />
+
+    </resultMap>
+
+
+<!--    查找所有点赞信息-->
+    <select id="searchAll" resultType="java.util.List" resultMap="FollowMap">
+        select * from follow
+    </select>
+
+<!--    关注用户-->
+    <insert id="followUser" parameterType="yjb.bysj.entity.Follow">
+        insert into follow (user_id, follow_id, status, create_on)
+        values (#{userId,jdbcType=INTEGER},#{followId,jdbcType=INTEGER},#{status,jdbcType=INTEGER},#{createOn,jdbcType=TIMESTAMP})
+    </insert>
+
+<!--    用户是否关注这个作者-->
+    <select id="isFollowed" resultType="yjb.bysj.entity.Follow" resultMap="FollowMap">
+        select * from follow where user_id = #{userId} and follow_id = #{followId}
+    </select>
+
+<!--    更新关注状态-->
+    <update id="updateFollowStatus" parameterType="yjb.bysj.entity.Follow">
+        update follow set status = case
+        when status = 0 then 1 else 0 end
+        where user_id = #{userId} and follow_id = #{followId}
+    </update>
+
+<!--    根据用户id查询该用户的粉丝数-->
+    <select id="getFansCountByUserId" resultType="java.lang.Integer">
+        select count(*) from follow where follow_id = #{userId} and status = 1
+    </select>
+
+<!--    根据用户id查询该用户的全部粉丝-->
+    <select id="getFansListByUserId" resultType="java.util.List" resultMap="FollowMap">
+        select * from follow where follow_id = #{userId} and status = 1
+    </select>
+
+<!--    根据用户id查询该用户的全部关注用户-->
+    <select id="getFollowListByUserId" resultType="java.util.List" resultMap="FollowMap">
+        select * from follow where user_id = #{userId} and status = 1
+    </select>
+
+<!--    根据用户id获取用户的关注数-->
+    <select id="getFollowCountByUserId" resultType="java.lang.Integer">
+        select count(*) from follow where user_id = #{userId} and status = 1
+    </select>
+
+</mapper>
