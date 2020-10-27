@@ -18,7 +18,7 @@ public class OssServiceImpl implements OssService {
     public String uploadFileAvatar(MultipartFile file) {
 
         //直接通过工具类取值，填入自己的key
-        String endpoint = "************;
+        String endpoint = "************";
         String accessKeyId = "**************";
         String accessKeySecret = "*****************";
         String bucketName = "***************";
