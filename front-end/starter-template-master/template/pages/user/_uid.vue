@@ -278,7 +278,7 @@ export default {
         this.followCount = response.data.data.followCount;
       });
     },
-    // 根据用户id获取该用户所有粉丝信息
+    // 根据用户id获取该用户的所有粉丝信息
     getFansListByUserId(followId) {
       followApi.getFansListByUserId(followId).then(response => {
         this.fansList = response.data.data.fansInfoList;
