@@ -16,6 +16,13 @@ export default {
       method: 'get'
     })
   },
+  // 查找所有博客（后台管理部分）
+  searchAllBlogs(page) {
+    return request({
+      url: `/blog/searchAllBlogs/${page}`,
+      method: 'get'
+    })
+  },
   // 根据博客id查询博客信息
   getBlogInfoById(blogId) {
     return request({
@@ -24,7 +31,7 @@ export default {
     })
   },
   // 根据内容查询博客
-  searchContent(content) {
+  searchAccountContent(content) {
     return request({
       url: `/blog/search/${content}`,
       method: 'get'
@@ -74,5 +81,20 @@ export default {
       url: `/blog/getDraftByUserId/${id}`,
       method: 'get'
     })
+  },
+  // 通过内容查询博客
+  searchContent(content) {
+    return request({
+      url: `/blog/searchContent/${content}`,
+      method: 'get'
+    })
+  },
+  // 删除数据库里的博客信息
+  deleteBlogByBlogId(blogId) {
+    return request({
+      url: `/blog/deleteBlogByBlogId/${blogId}`,
+      method: 'get'
+    })
   }
+
 }

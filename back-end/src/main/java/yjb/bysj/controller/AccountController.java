@@ -1,5 +1,7 @@
 package yjb.bysj.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import yjb.bysj.common_utils.JwtUtils;
@@ -121,5 +123,37 @@ public class AccountController {
         accountService.updateAvatarByUserId(userId, avatar);
         return Res.ok();
     }
+
+
+    // ==============================================后台管理部分=====================================================================
+
+    // 查找所有账号
+    @GetMapping("/searchAllAccount/{page}")
+    public Res searchAllCount(@PathVariable Integer page) {
+
+        PageHelper.startPage(page, 8);
+        List<Account> list = accountService.searchAllAccounts();
+        PageInfo pageInfo = new PageInfo(list, 5);
+
+        return Res.ok().data("pageInfo", pageInfo);
+    }
+
+    // 查找内容（分页）
+    @GetMapping("/searchContent/{content}")
+    public Res searchContent(@PathVariable String content) {
+        PageHelper.startPage(1, 8);
+        List<Account> list = accountService.searchContent(content);
+        PageInfo pageInfo = new PageInfo(list, 5);
+
+        return Res.ok().data("pageInfo", pageInfo);
+    }
+
+    // 根据用户id删除数据库中的账号记录
+    @GetMapping("/deleteAccount/{userId}")
+    public Res deleteAccount(@PathVariable Integer userId) {
+        accountService.deleteAccount(userId);
+        return Res.ok();
+    }
+
 
 }

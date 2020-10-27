@@ -42,4 +42,10 @@ public interface BlogMapper {
 
     // 根据用户id获取该用户写的博客数量
     Integer getBlogCountByUserId(Integer userId);
+
+    // 查找所有博客（后台管理部分）
+    List<Blog> searchAllBlogs();
+
+    // 删除数据库里的博客信息
+    void deleteBlogByBlogId(Integer blogId);
 }

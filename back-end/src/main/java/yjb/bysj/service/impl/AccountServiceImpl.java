@@ -62,6 +62,11 @@ public class AccountServiceImpl implements AccountService {
         Account accountInfoByUsername = accountMapper.getAccountInfoByUsername(username);
 
         if(accountInfoByUsername.getPassword().equals(password)) {
+
+            if (username.equals("myblogadmin")) { // 管理员登录
+                return Res.ok().code(6666);
+            }
+
             // 将根据用户id和用户名生成token字符串
             String jwtToken = JwtUtils.getJwtToken(accountInfoByUsername.getId().toString(), accountInfoByUsername.getUsername());
             System.out.println(jwtToken);
@@ -93,6 +98,17 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updateAvatarByUserId(Integer userId, String avatar) {
         accountMapper.updateAvatarByUserId(userId, avatar);
+    }
+
+    @Override
+    public List<Account> searchContent(String content) {
+        List<Account> list = accountMapper.searchContent(content);
+        return list;
+    }
+
+    @Override
+    public void deleteAccount(Integer userId) {
+        accountMapper.deleteAccount(userId);
     }
 
 }

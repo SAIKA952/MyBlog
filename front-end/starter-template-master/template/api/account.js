@@ -54,5 +54,26 @@ export default {
       method: 'post',
       data: submitAvatarForm
     })
-  }
+  },
+  // 查找所有账号
+  searchAllAccount(page) {
+    return request({
+      url: `/account/searchAllAccount/${page}`,
+      method: 'get'
+    })
+  },
+  // 根据输入的内容进行查找（分页）
+  searchContent(content) {
+    return request({
+      url: `/account/searchContent/${content}`,
+      method: 'get'
+    })
+  },
+  // 根据用户id删除数据库中的记录
+  deleteAccount(userId) {
+    return request({
+      url: `/account/deleteAccount/${userId}`,
+      method: 'get'
+    })
+  } 
 }

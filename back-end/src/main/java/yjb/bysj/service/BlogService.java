@@ -31,4 +31,9 @@ public interface BlogService {
     List<Blog> getDraftByUserId(Integer userId);
 
     Integer getBlogCountByUserId(Integer userId);
+
+    List<Blog> searchAllBlogs();
+
+    // 删除数据库的博客信息
+    void deleteBlogByBlogId(Integer blogId);
 }

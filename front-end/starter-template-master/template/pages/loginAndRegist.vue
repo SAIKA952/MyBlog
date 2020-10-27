@@ -152,6 +152,8 @@ export default {
               this.$router.push({ path: '/' })
             })
           }
+        } else if (response.data.code === 6666) { // 管理员登录
+          this.$router.push({ path: '/manage' });
         }
       })
     },

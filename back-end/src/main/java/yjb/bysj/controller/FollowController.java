@@ -92,32 +92,34 @@ public class FollowController {
             FollowInfo followInfo = new FollowInfo(); // 封装显示数据
 
             Account account = accountService.getAccountInfoById(follow.getUserId());
-            followInfo.setUsername(account.getUsername());
-            followInfo.setAvatar(account.getAvatar());
-            followInfo.setUserId(follow.getUserId());
-            followInfo.setFollowId(follow.getFollowId());
+            if (null != account) {
+                followInfo.setUsername(account.getUsername());
+                followInfo.setAvatar(account.getAvatar());
+                followInfo.setUserId(follow.getUserId());
+                followInfo.setFollowId(follow.getFollowId());
 
-            // 获取该用户点赞文章的数量
-            Integer likedCount = likedService.getLikedCountByUserId(follow.getUserId());
-            followInfo.setLikedCount(likedCount);
+                // 获取该用户点赞文章的数量
+                Integer likedCount = likedService.getLikedCountByUserId(follow.getUserId());
+                followInfo.setLikedCount(likedCount);
 
-            // 获取该用户收藏文章的数量
-            Integer collectCount = likedService.getCollectCountByUserId(follow.getUserId());
-            followInfo.setCollectCount(collectCount);
+                // 获取该用户收藏文章的数量
+                Integer collectCount = likedService.getCollectCountByUserId(follow.getUserId());
+                followInfo.setCollectCount(collectCount);
 
-            // 获取该用户写的文章的数量
-            Integer blogCount = blogService.getBlogCountByUserId(follow.getUserId());
-            followInfo.setBlogCount(blogCount);
+                // 获取该用户写的文章的数量
+                Integer blogCount = blogService.getBlogCountByUserId(follow.getUserId());
+                followInfo.setBlogCount(blogCount);
 
-            // 获取该用户的粉丝数
-            Integer fansCount = followService.getFansCountByUserId(follow.getUserId());
-            followInfo.setFansCount(fansCount);
+                // 获取该用户的粉丝数
+                Integer fansCount = followService.getFansCountByUserId(follow.getUserId());
+                followInfo.setFansCount(fansCount);
 
-            // 获取该用户的关注数
-            Integer followCount = followService.getFollowCountByUserId(follow.getUserId());
-            followInfo.setFollowCount(followCount);
+                // 获取该用户的关注数
+                Integer followCount = followService.getFollowCountByUserId(follow.getUserId());
+                followInfo.setFollowCount(followCount);
 
-            fansInfoList.add(followInfo);
+                fansInfoList.add(followInfo);
+            }
         }
 
         return Res.ok().data("fansInfoList", fansInfoList).data("fansCount", fansInfoList.size());

@@ -1,5 +1,7 @@
 package yjb.bysj.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import yjb.bysj.common_utils.JwtUtils;
@@ -261,4 +263,35 @@ public class BlogController {
 
         return Res.ok().data("draftList", list);
     }
+
+    // =========================================后台管理部分=============================================================
+
+    // 查找所有博客
+    @GetMapping("/searchAllBlogs/{page}")
+    public Res searchAllBlogs(@PathVariable Integer page) {
+
+        PageHelper.startPage(page, 8);
+        List<Blog> list = blogService.searchAllBlogs();
+        PageInfo pageInfo = new PageInfo(list, 5);
+
+        return Res.ok().data("pageInfo", pageInfo);
+    }
+
+    // 查找内容（分页）
+    @GetMapping("/searchContent/{content}")
+    public Res searchBlogByContent(@PathVariable String content) {
+        PageHelper.startPage(1, 8);
+        List<Blog> list = blogService.searchContent(content);
+        PageInfo pageInfo = new PageInfo(list, 5);
+
+        return Res.ok().data("pageInfo", pageInfo);
+    }
+
+    // 根据博客id删除博客记录
+    @GetMapping("/deleteBlogByBlogId/{blogId}")
+    public Res deleteBlogByBlogId(@PathVariable Integer blogId) {
+        blogService.deleteBlogByBlogId(blogId);
+        return Res.ok();
+    }
+
 }

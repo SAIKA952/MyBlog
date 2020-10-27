@@ -84,4 +84,15 @@ public class BlogServiceImpl implements BlogService {
         Integer count = blogMapper.getBlogCountByUserId(userId);
         return count;
     }
+
+    @Override
+    public List<Blog> searchAllBlogs() {
+        List<Blog> list = blogMapper.searchAllBlogs();
+        return list;
+    }
+
+    @Override
+    public void deleteBlogByBlogId(Integer blogId) {
+        blogMapper.deleteBlogByBlogId(blogId);
+    }
 }

@@ -111,7 +111,7 @@ export default {
       this.editBlog(this.$route.query.bid);
     }
   },
-  methods: {
+  methods: {  
     // 图片添加
     $imgAdd(pos, file) {
       const isLt10M = file.size / 1024 / 1024 < 10

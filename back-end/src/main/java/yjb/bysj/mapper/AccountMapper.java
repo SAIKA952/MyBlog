@@ -30,4 +30,10 @@ public interface AccountMapper {
 
     // 修改用户头像
     void updateAvatarByUserId(Integer userId, String avatar);
+
+    // 根据输入的内容进行查找
+    List<Account> searchContent(String content);
+
+    // 根据用户id删除账号信息
+    void deleteAccount(Integer userId);
 }
