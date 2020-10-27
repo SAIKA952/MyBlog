@@ -44,7 +44,7 @@
 
 <!--    按照输入的内容进行查询-->
     <select id="searchContent" resultType="java.util.List" resultMap="BlogMap">
-        select * from blog where content like "%"#{content}"%" or title like "%"#{title}"%"
+        select * from blog where content like "%"#{content}"%" or title like "%"#{content}"%"
     </select>
 
 <!--    根据作者id查找作者的所有博客，按照浏览量降序排序-->
@@ -54,7 +54,7 @@
 
 <!--    修改博客-->
     <update id="updateBlog" parameterType="yjb.bysj.entity.Blog">
-        update blog set title = #{title}, content = #{content}, version = version + 1,  update_on = #{updateOn}, status = #{status} where id = #{id}
+        update blog set author_id = #{authorId}, title = #{title}, content = #{content}, version = version + 1,  update_on = #{updateOn}, status = #{status} where id = #{id}
     </update>
 
 <!--    删除博客，实际上是将status改为-1-->
@@ -82,4 +82,13 @@
         select count(*) from blog where author_id = #{userId} and status = 1
     </select>
 
+<!--    查找所有博客-->
+    <select id="searchAllBlogs" parameterType="yjb.bysj.entity.Blog" resultMap="BlogMap">
+        select * from blog order by create_on desc
+    </select>
+
+<!--    删除数据库里的博客信息-->
+    <delete id="deleteBlogByBlogId" parameterType="yjb.bysj.entity.Blog">
+        delete from blog where id = #{blogId}
+    </delete>
 </mapper>

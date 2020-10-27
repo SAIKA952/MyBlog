@@ -58,9 +58,6 @@
             <div class="block" style="position:relative;display:inline;">
               <div>
                 <div style="display:inline;position:relative;">
-                  <!-- <div>
-                  <el-avatar :size="50" :src="author.avatar" />
-                  </div>-->
                   <div>
                     <h4>
                       {{ author.username }}

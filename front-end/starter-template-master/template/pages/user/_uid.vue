@@ -257,7 +257,6 @@ export default {
   mounted() {
     if (this.$route.query.menu == "draft") {
       // 页头点击草稿箱，跳转到第五个标签
-      console.log(111);
       this.activeName = "sixth";
     }
     this.getAllBlogsByUserId(this.userInfo.id);
@@ -304,7 +303,6 @@ export default {
     getDraftByUserId(id) {
       blogApi.getDraftByUserId(id).then(response => {
         this.draftList = response.data.data.draftList;
-        console.log(this.draftList);
       });
     },
     // 从cookie中获取当前登录用户的信息

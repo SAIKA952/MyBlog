@@ -7,6 +7,7 @@
         <id column="id" property="id" jdbcType="VARCHAR" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="avatar" property="avatar" jdbcType="VARCHAR" />
         <result column="sex" property="sex" jdbcType="INTEGER" />
         <result column="email" property="email" jdbcType="INTEGER" />
@@ -19,7 +20,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, username, password, avatar, sex, email, birthday, status, last_login, create_on, update_on
+        id, username, password, phone, avatar, sex, email, birthday, status, last_login, create_on, update_on
     </sql>
 
     <select id="searchAllAccounts" resultType="java.util.List" resultMap="AccountMap">
@@ -51,7 +52,7 @@
 
 <!--    修改账号信息-->
     <update id="updateAccount" parameterType="yjb.bysj.entity.Account">
-        update account set username = #{username}, phone = #{phone}, email = #{email}, sex = #{sex}, birthday = #{birthday}, update_on = #{updateOn} where id = #{id}
+        update account set username = #{username}, phone = #{phone}, email = #{email}, sex = #{sex}, birthday = #{birthday}, status = #{status}, update_on = #{updateOn} where id = #{id}
     </update>
 
 <!--    修改密码-->
@@ -63,5 +64,15 @@
     <update id="updateAvatarByUserId" parameterType="yjb.bysj.entity.Account">
         update account set avatar = #{avatar} where id = #{userId}
     </update>
+
+<!--    根据输入的内容查找-->
+    <select id="searchContent" parameterType="yjb.bysj.entity.Account" resultMap="AccountMap">
+        select * from account where username like "%"#{content}"%"
+    </select>
+
+<!--    根据用户id删除账号信息-->
+    <delete id="deleteAccount" parameterType="yjb.bysj.entity.Account">
+        delete from account where id = #{userId}
+    </delete>
 
 </mapper>
