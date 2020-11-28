@@ -32,6 +32,10 @@
                   </el-form>
                 </div>
                 <div style="position:relative;left:43%">
+                  <div>
+                    <el-checkbox v-model="rememberMe">记住我</el-checkbox>
+                  </div>
+                  <br />
                   <el-button type="primary" round @click="login()">登录</el-button>
                 </div>
               </el-tab-pane>
@@ -92,6 +96,7 @@ export default {
       time: 60,
       codeText: "发送验证码",
       activeName: "first",
+      rememberMe: false, // 记住我
       // 登录表单
       loginForm: {
         username: "",
@@ -186,11 +191,17 @@ export default {
             message: "登录成功",
             type: "success"
           });
-          // 将token保存在cookie中
-          cookie.set('login_token', response.data.data.accountToken, { domain: '115.29.209.156' }) // 115.29.209.156 localhost
-          if (cookie.get('login_token')) {
 
-            accountApi.getAccountInfoByToken().then(response => {
+          if (this.rememberMe) { // 用户点了记住我
+            // 将token保存在cookie中，expires设置7天内cookie不过期。如果不设置expires，则退出浏览器的时候自动删除cookie
+            cookie.set('login_token', response.data.data.accountToken, { expires: 7, domain: '115.29.209.156' }) // 115.29.209.156 localhost
+          } else {
+            cookie.set('login_token', response.data.data.accountToken, { domain: '115.29.209.156' }) // 115.29.209.156 localhost
+          }
+
+          if (cookie.get('login_token')) { 
+
+            accountApi.getAccountInfoByToken().then(response => { // 获取登录信息
               this.accountInfo = response.data.data.accountInfo
               this.idAndUsername.id = this.accountInfo.id
               this.idAndUsername.username = this.accountInfo.username

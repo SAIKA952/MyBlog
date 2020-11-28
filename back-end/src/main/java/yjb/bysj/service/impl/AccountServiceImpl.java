@@ -69,7 +69,11 @@ public class AccountServiceImpl implements AccountService {
 
             // 将根据用户id和用户名生成token字符串
             String jwtToken = JwtUtils.getJwtToken(accountInfoByUsername.getId().toString(), accountInfoByUsername.getUsername());
-            System.out.println(jwtToken);
+//            System.out.println(jwtToken);
+
+            // 设置最近登录时间
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            accountMapper.updateLastLogin(accountInfoByUsername.getId(), timestamp);
 
             return Res.ok().data("accountToken", jwtToken);
         }

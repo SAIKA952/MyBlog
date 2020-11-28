@@ -36,4 +36,7 @@ public interface AccountMapper {
 
     // 根据用户id删除账号信息
     void deleteAccount(Integer userId);
+
+    // 修改最近登录时间
+    void updateLastLogin(Integer id, Timestamp timestamp);
 }
