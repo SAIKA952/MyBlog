@@ -43,12 +43,12 @@
 
 <!--    根据用户id查询该用户的全部粉丝-->
     <select id="getFansListByUserId" resultType="java.util.List" resultMap="FollowMap">
-        select * from follow where follow_id = #{userId} and status = 1
+        select * from follow where follow_id = #{userId} and status = 1 order by create_on desc
     </select>
 
 <!--    根据用户id查询该用户的全部关注用户-->
     <select id="getFollowListByUserId" resultType="java.util.List" resultMap="FollowMap">
-        select * from follow where user_id = #{userId} and status = 1
+        select * from follow where user_id = #{userId} and status = 1 order by create_on desc
     </select>
 
 <!--    根据用户id获取用户的关注数-->

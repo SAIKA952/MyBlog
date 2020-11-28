@@ -1,5 +1,5 @@
 <template>
-  <div style="position:relative;top:60px">
+  <div style="position:relative;">
     <div>
       <br />
       <div style="width:1000px;left:25%;position:relative;">
@@ -16,7 +16,7 @@
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
                     class="avatar-uploader"
-                    action="http://localhost:8001/oss">
+                    action="http://115.29.209.156:8001/oss">
                     <el-avatar :src="avatarUrl" :size="100" class="avatar" />
                   </el-upload>
                 </div>
@@ -25,7 +25,7 @@
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                   class="avatar-uploader"
-                  action="http://localhost:8001/oss">
+                  action="http://115.29.209.156:8001/oss">
                   <el-button style="left:40px;position:relative;top:25px" type="success" plain round>更换头像</el-button>
                 </el-upload>
                 
@@ -131,11 +131,6 @@
               <br />
               <el-button type="success" plain round @click="updatePassword()">修改</el-button>
             </div>
-          </el-tab-pane>
-          <el-tab-pane>
-            <span slot="label">
-              <i class="el-icon-date">个人资料</i>
-            </span>
           </el-tab-pane>
         </el-tabs>
       </div>

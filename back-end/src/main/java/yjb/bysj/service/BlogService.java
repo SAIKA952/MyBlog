@@ -36,4 +36,6 @@ public interface BlogService {
 
     // 删除数据库的博客信息
     void deleteBlogByBlogId(Integer blogId);
+
+    List<Blog> searchCheckingBlog();
 }

@@ -1,5 +1,5 @@
 <template>
-  <div style="width:90%;left:5%;position:relative;top:60px">
+  <div style="width:90%;left:5%;position:relative;top:60px;min-width:700px">
     <div style="position:relative;top:30px;">
       <div>
         <el-form label-width="40px" :model="form">
@@ -107,9 +107,17 @@ export default {
     };
   },
   created() {
-    if (this.$route.query.bid) {
-      this.editBlog(this.$route.query.bid);
-    }
+    if (cookie.get('login_token')) {
+      if (this.$route.query.bid) {
+        this.editBlog(this.$route.query.bid);
+      }
+    } else {
+       this.$message({
+          message: "请先登录",
+          type: "error"
+        });
+        this.$router.push({ path: '/loginAndRegist' })
+     }
   },
   methods: {  
     // 图片添加
@@ -123,7 +131,7 @@ export default {
         formdata.append('file', file);
         this.img_file[pos] = file;
         axios({
-          url: 'http://localhost:8001/oss',
+          url: 'http://115.29.209.156/oss',
           method: 'post',
           data: formdata,
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -158,12 +166,12 @@ export default {
         // 将用户的id和用户名一起发送到后端中
         this.form.userId = this.idAndUsername.id;
         this.form.username = this.idAndUsername.username;
-        this.form.status = 1 // 设置状态为1，表示正常发布
+        this.form.status = -2 // 设置状态为-2，表示正在审核
 
         blogApi.submitBlog(this.form).then(response => {
           console.log(response);
           this.$message({
-            message: "提交成功",
+            message: "提交成功，等待审核通过",
             type: "success"
           });
         });

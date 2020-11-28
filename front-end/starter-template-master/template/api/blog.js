@@ -31,7 +31,7 @@ export default {
     })
   },
   // 根据内容查询博客
-  searchAccountContent(content) {
+  searchBlogByContent(content) {
     return request({
       url: `/blog/search/${content}`,
       method: 'get'
@@ -93,6 +93,13 @@ export default {
   deleteBlogByBlogId(blogId) {
     return request({
       url: `/blog/deleteBlogByBlogId/${blogId}`,
+      method: 'get'
+    })
+  },
+  // 查找正在审核的文章
+  searchCheckingBlog() {
+    return request({
+      url: `/blog/searchCheckingBlog`,
       method: 'get'
     })
   }

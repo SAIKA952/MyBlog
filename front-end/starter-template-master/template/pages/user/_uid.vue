@@ -1,5 +1,5 @@
 <template>
-  <div style="position:relative;top:60px">
+  <div style="position:relative;">
     <el-backtop />
     <div>
       <div style="position:relative;left:25%;width:960px;">
@@ -13,7 +13,13 @@
               </div>
               <div style="position:relative;left:20px">
                 <div>
-                  <h4 style="font-size:30px;">{{ userInfo.username }}</h4>
+                  <div style="display:inline-block">
+                    <h4 style="font-size:30px;">{{ userInfo.username }}</h4>
+                  </div>
+                  <div v-if="userInfo.id !== loginInfo.id"  style="display:inline-block">
+                    <el-button v-if="!isUserFollowed" style="left:20px;position:relative;top:-5px" type="primary" round size="mini" @click="followUser()">关注</el-button>
+                    <el-button v-if="isUserFollowed" style="left:20px;position:relative;top:-5px" type="primary" round plain size="mini" @click="followUser()">取消关注</el-button>
+                  </div>
                 </div>
                 <div>
                   <p style="font-size:20px">
@@ -154,7 +160,7 @@
                             <el-divider direction="vertical" />
                             关注：{{ follow.followCount }}
                             <el-divider direction="vertical" />
-                            粉丝{{ follow.fansCount }}
+                            粉丝：{{ follow.fansCount }}
                           </div>
                         </div>
                       </div>
@@ -184,7 +190,7 @@
                             <el-divider direction="vertical" />
                             关注：{{ fans.followCount }}
                             <el-divider direction="vertical" />
-                            粉丝{{ fans.fansCount }}
+                            粉丝：{{ fans.fansCount }}
                           </div>
                         </div>
                       </div>
@@ -251,14 +257,41 @@ export default {
       collectCount: "", // 收藏文章的数量
       likedBlogCount: "", // 点赞文章的数量
       activeName: "first",
-      draftList: "" // 草稿
+      draftList: "", // 草稿
+      isUserLogin: "", // 是否登录
+      menu: "",
+      follow: {}, // 封装关注信息
+      isUserFollowed: "" // 用户是否关注对象
     };
   },
+  watch: {
+    $route(){
+      this.menu = this.$route.query.menu
+    },
+    menu() {
+      if (this.menu == "draft") {
+        // 页头点击草稿箱，跳转到第五个标签
+        this.activeName = "sixth";
+      } else if (this.menu == "collect") {
+        this.activeName = "third";
+      } else if (this.menu == "blog") {
+        this.activeName = "first";
+      }
+    },
+  },
   mounted() {
-    if (this.$route.query.menu == "draft") {
-      // 页头点击草稿箱，跳转到第五个标签
-      this.activeName = "sixth";
+    if (this.$route.query.menu) {
+      this.menu = this.$route.query.menu
+      if (this.$route.query.menu == "draft") {
+        // 页头点击草稿箱，跳转到第五个标签
+        this.activeName = "sixth";
+      } else if (this.$route.query.menu == "collect") {
+        this.activeName = "third";
+      } else if (this.$route.query.menu == "blog") {
+        this.activeName = "first";
+      }
     }
+    
     this.getAllBlogsByUserId(this.userInfo.id);
     this.getLikedListByUserId(this.userInfo.id);
     this.getCollectListByUserId(this.userInfo.id);
@@ -269,8 +302,44 @@ export default {
       // 如果当前用户页面是登录用户的用户页面，就查找草稿箱
       this.getDraftByUserId(this.loginInfo.id);
     }
+    this.isFollow(this.loginInfo.id, this.userInfo.id) // 登录用户是否关注这个用户
   },
   methods: {
+    // 当前登录用户是否关注当前显示用户
+    isFollow(userId, followId) {
+      followApi.isFollowed(userId, followId).then(response => {
+        this.isUserFollowed = response.data.data.isFollowed;
+      })
+    },
+    // 关注/取关用户
+    followUser() {
+      if (this.isUserLogin) {
+        this.follow.userId = this.loginInfo.id
+        this.follow.followId = this.userInfo.id
+        followApi.followUser(this.follow).then(response => {
+          if (this.isUserFollowed) {
+            this.isUserFollowed = 0;
+            this.fansCount--;
+            this.$message({
+              message: "取关成功",
+              type: "success"
+            });
+          } else {
+            this.$message({
+              message: "关注成功",
+              type: "success"
+            });
+            this.fansCount++;
+            this.isUserFollowed = 1;
+          }
+        })
+      } else {
+        this.$message({
+          message: "请先登录",
+          type: "error"
+        });
+      }
+    },
     // 根据用户id获取该用户关注的所有用户信息
     getFollowListByUserId(userId) {
       followApi.getFollowListByUserId(userId).then(response => {
@@ -310,6 +379,9 @@ export default {
       if (cookie.get("user_info")) {
         var loginInfoStr = cookie.get("user_info"); // 从cookie中获取登录信息的字符串
         this.loginInfo = JSON.parse(loginInfoStr); // 将字符串转化为JSON格式
+        this.isUserLogin = true
+      } else {
+        this.isUserLogin = false
       }
     },
     // 根据用户id查询用户的所有博客
@@ -318,7 +390,7 @@ export default {
         this.blogList = response.data.data.blogList; // 博客列表
         this.blogCount = response.data.data.blogCount; // 博客数
       });
-    }
+    },
   }
 };
 </script>

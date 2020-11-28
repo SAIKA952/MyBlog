@@ -48,4 +48,7 @@ public interface BlogMapper {
 
     // 删除数据库里的博客信息
     void deleteBlogByBlogId(Integer blogId);
+
+    // 查找正在审核的文章
+    List<Blog> searchCheckingBlog();
 }

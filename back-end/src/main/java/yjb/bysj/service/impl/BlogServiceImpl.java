@@ -95,4 +95,10 @@ public class BlogServiceImpl implements BlogService {
     public void deleteBlogByBlogId(Integer blogId) {
         blogMapper.deleteBlogByBlogId(blogId);
     }
+
+    @Override
+    public List<Blog> searchCheckingBlog() {
+        List<Blog> list = blogMapper.searchCheckingBlog();
+        return list;
+    }
 }

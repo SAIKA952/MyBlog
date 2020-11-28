@@ -1,24 +1,28 @@
 <template>
-  <div style="position:relative;top:60px">
+  <div>
     <el-backtop />
     <div v-for="index in indexList" :key="index.id">
-      <div style="min-width:1200px;position:relative;top:30px">
-        <div style="position:relative;left:25%;width:50%;">
-          <div style="float:left;text-align:center;cursor:pointer;width:100px" @click="gotoUserPage(index.authorId)">
-            <div class="block"><el-avatar :size="50" :src="index.authorAvatar"/></div>
-            <div>
-              {{ index.authorName }}
+      <div style="position:relative;left:25%;top:20px;min-width:1000px;width:50%;">
+        <div>
+          <div style="text-align:center;cursor:pointer;width:120px;display:inline-block;" @click="gotoUserPage(index.authorId)">
+            <div style="width:100%">
+              <div class="block"><el-avatar :size="50" :src="index.authorAvatar"/></div>
+              <div>
+                {{ index.authorName }}
+              </div>
             </div>
           </div>
-          <div>
-            <div style="left:20px;position:relative">
+          <div style="left:20px;position:relative;display:inline-block;width:760px;">
+            <div>
               <!-- <router-link :to="{name: 'blog', query: {bid: index.blogId}}" style="text-decoration:none;color:black">
                 <h2>{{ index.blogTitle }}</h2>
               </router-link> -->
-              <a :href="'/blog/' + index.blogId" style="text-decoration:none;color:black">
-                {{ index.blogTitle }}
-              </a>
-              <p style="color:#808080;position:relative;top:10px;width:98%">{{ index.blogContent }}</p>
+              <div style="position:absolute;top:-55px;cursor:pointer" @click="gotoBLogPage(index.blogId)">
+                <a style="text-decoration:none;color:black">
+                  {{ index.blogTitle }}
+                </a>
+                <p style="color:#808080;position:relative;top:10px;">{{ index.blogContent }}</p>
+              </div>
             </div>
             <div style="float:right;font-size:13px;top:20px;position:relative">
               <p style="color:#A9A9A9">
@@ -68,6 +72,9 @@ export default {
     // 点击作者头像，去该用户的主页
     gotoUserPage(id) {
       this.$router.push({ path: '/user/' + id })
+    },
+    gotoBLogPage(bid) {
+      this.$router.push({ path: '/blog/' +  bid})
     }
   }
 }

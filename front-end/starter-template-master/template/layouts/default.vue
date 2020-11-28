@@ -1,13 +1,22 @@
 <template>
   <div>
     <div>
-      <header style="position:fixed;z-index:999;width:100%;min-width:1000px;background-color:white">
+      <header style="position:relative;z-index:999;width:100%;min-width:1000px;background-color:white">
         <div style="height:60px;border-bottom:1px solid #DCDCDC">
           
           <div style="position:relative;float:left;left:25%">
             <el-button type="text" style="font-size:28px" @click="goHome()">主页</el-button>
           </div>
           
+          <div style="float:left;position:relative;left:38%;top:10px">
+            <el-dropdown @command="handleWriteCommand">
+              <el-button type="primary" class="el-icon-edit">创作</el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-edit-outline" command="write">写博客</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-folder-opened" command="draft">草稿箱</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           
           <div style="float:left;position:relative;top:10px;left:40%">
             <div style="float:left;position:relative;">
@@ -18,17 +27,18 @@
             </div>
           </div>
 
-          <div style="float:left;position:relative;left:52%;top:10px">
-            <el-dropdown @command="handleWriteCommand">
-              <el-button type="primary" class="el-icon-edit">创作</el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item icon="el-icon-edit-outline" command="write">写博客</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-folder-opened" command="draft">草稿箱</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+          <div v-if="accountInfo" style="float:left;position:relative;left:45%;height:60px;">
+            <div style="top:18px;position:relative;text-align:center">
+              <div style="float:left;width:60px;cursor:pointer" @click="gotoMyBlog()">
+                博客
+              </div>
+              <div style="float:left;width:60px;cursor:pointer" @click="gotoMyCollection()">
+                收藏
+              </div>
+            </div>
           </div>
 
-          <div style="float:left;position:relative;left:53%;top:8px">
+          <div style="float:left;position:relative;left:46%;top:8px">
             <div v-if="!accountInfo" :key="accountInfo.id">
               <el-button type="text">
                 <a style="color:#808080;font-size:18px;" @click="login()">登录</a>
@@ -118,14 +128,15 @@ export default {
       if (cookie.get('login_token')) {
         if (command === 'logout') {
           // 清空cookie信息
-          cookie.set('login_token', '', { domain: 'localhost' })
-          cookie.set('login_info', '', { domain: 'localhost' })
-          cookie.set('user_info', '', { domain: 'localhost' })
+          cookie.set('login_token', '', { domain: '115.29.209.156' }) // localhost 115.29.209.156
+          cookie.set('login_info', '', { domain: '115.29.209.156' })
+          cookie.set('user_info', '', { domain: '115.29.209.156' })
+          this.accountInfo = ""
           this.$message({
             message: "退出成功",
             type: "success"
           }); 
-          this.$router.go(0)
+          this.$router.push({ path: '/blank' })
         } else if (command === 'myPage') {
           this.$router.push({ path: '/user/' + this.accountInfo.id })
         } else if (command === 'option') {
@@ -167,6 +178,16 @@ export default {
     },
     regist() {
       this.$router.push({ name: "loginAndRegist", params: { id: 2 } });
+    },
+    gotoMyBlog() {
+      if (cookie.get('login_token')) {
+        this.$router.push({ path: '/user/' + this.accountInfo.id , query: { menu: 'blog' }})
+      }
+    },
+    gotoMyCollection() {
+      if (cookie.get('login_token')) {
+        this.$router.push({ path: '/user/' + this.accountInfo.id , query: { menu: 'collect' }})
+      }
     },
     goHome() {
       this.$router.push({ path: '/' })

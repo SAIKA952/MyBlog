@@ -44,7 +44,7 @@
 
 <!--    按照输入的内容进行查询-->
     <select id="searchContent" resultType="java.util.List" resultMap="BlogMap">
-        select * from blog where content like "%"#{content}"%" or title like "%"#{content}"%"
+        select * from blog where title like "%"#{content}"%"
     </select>
 
 <!--    根据作者id查找作者的所有博客，按照浏览量降序排序-->
@@ -74,7 +74,7 @@
 
 <!--    根据用户id查询该用户草稿箱里的博客-->
     <select id="getDraftByUserId" resultType="yjb.bysj.entity.Blog" resultMap="BlogMap">
-        select * from blog where author_id = #{userId} and status = 0
+        select * from blog where author_id = #{userId} and status = 0 order by create_on desc
     </select>
 
 <!--    根据用户id获取该用户写的博客数量-->
@@ -91,4 +91,9 @@
     <delete id="deleteBlogByBlogId" parameterType="yjb.bysj.entity.Blog">
         delete from blog where id = #{blogId}
     </delete>
+
+<!--    查找正在审核的文章-->
+    <select id="searchCheckingBlog" parameterType="java.util.List" resultMap="BlogMap">
+        select * from blog where status = -2
+    </select>
 </mapper>

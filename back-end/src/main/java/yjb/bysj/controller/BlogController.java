@@ -294,4 +294,12 @@ public class BlogController {
         return Res.ok();
     }
 
+    // 查找所有正在审核的文章
+    @GetMapping("searchCheckingBlog")
+    public Res searchCheckingBlog() {
+        List<Blog> list = blogService.searchCheckingBlog();
+
+        return Res.ok().data("checkingBlog", list);
+    }
+
 }
