@@ -91,7 +91,7 @@
 
 <!--    根据用户id查询该用户点赞的文章-->
     <select id="getLikedListByUserId" resultType="java.util.List" resultMap="LikedMap">
-        select * from liked where user_id = #{userId} and status = 1 and comment_id is null
+        select * from liked where user_id = #{userId} and status = 1 and comment_id is null order by create_on desc
     </select>
 
 <!--    根据博客id查找该博客的点赞数-->
@@ -106,7 +106,7 @@
 
 <!--    根据用户id查找该用户收藏的文章-->
     <select id="getCollectListByUserId" resultType="java.util.List" resultMap="CollectMap">
-        select * from collect where user_id = #{userId} and status = 1
+        select * from collect where user_id = #{userId} and status = 1 order by create_on desc
     </select>
 
 <!--    根据用户id获取该用户点赞的文章数-->

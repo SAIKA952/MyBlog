@@ -75,4 +75,9 @@
         delete from account where id = #{userId}
     </delete>
 
+<!--    设置最近登录时间-->
+    <update id="updateLastLogin" parameterType="yjb.bysj.entity.Account">
+        update account set last_login = #{timestamp} where id = #{id}
+    </update>
+
 </mapper>
