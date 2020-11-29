@@ -210,7 +210,7 @@ export default {
     };
   },
   mounted() {
-    this.initData(); // 初始化页面数据
+    this.getLoginInfo(); // 初始化页面数据
   },
   methods: {
     // 将新头像的地址保存到数据库中
@@ -293,14 +293,22 @@ export default {
     },
     // 从cookie中获取登录账号的id
     getLoginInfo() {
-      var userInfoStr = cookie.get("user_info");
-      this.userInfo = JSON.parse(userInfoStr);
-    },
-    // 初始化页面数据
-    initData() {
-      this.getLoginInfo();
-      this.getAccountInfoById(this.userInfo.id);
+      if (cookie.get("user_info")) {
+        var userInfoStr = cookie.get("user_info");
+        this.userInfo = JSON.parse(userInfoStr);
+        this.getAccountInfoById(this.userInfo.id);
+      } else {
+        this.$message({
+          message: "请先登录",
+          type: "error"
+        });
+        this.$router.push({ path: '/loginAndRegist' })
+      }
     }
+    // // 初始化页面数据
+    // initData() {
+    //   this.getLoginInfo();
+    // }
   }
 };
 </script>

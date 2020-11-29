@@ -153,7 +153,7 @@
                     :rows="2"
                     placeholder="请输入内容"
                     v-model="commentForm.content"
-                    style="width:70%;left:35px"
+                    style="width:85%;left:35px"
                   ></el-input>
                   <el-button
                     type="primary"
