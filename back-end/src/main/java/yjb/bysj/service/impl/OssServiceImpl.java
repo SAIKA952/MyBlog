@@ -18,10 +18,10 @@ public class OssServiceImpl implements OssService {
     public String uploadFileAvatar(MultipartFile file) {
 
         //直接通过工具类取值，填入自己的key
-        String endpoint = "oss-cn-hangzhou.aliyuncs.com";
-        String accessKeyId = "LTAI4GDfHSLGr5BHF4Hwrjy2";
-        String accessKeySecret = "nR7QRJTL88oD7j3lOsrExBNyB5apwe";
-        String bucketName = "edu-952";
+        String endpoint = "xxx";
+        String accessKeyId = "xxx";
+        String accessKeySecret = "xxx";
+        String bucketName = "xxx";
 
         try{
             // 创建OSSClient实例。
