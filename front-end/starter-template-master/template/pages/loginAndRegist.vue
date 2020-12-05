@@ -142,7 +142,7 @@ export default {
     } else {
       this.activeName = "second";
     }
-    this.isLogin()
+    // this.isLogin()
   },
   methods: {
     // 验证手机号是否合法
@@ -195,9 +195,9 @@ export default {
 
           if (this.rememberMe) { // 用户点了记住我
             // 将token保存在cookie中，expires设置7天内cookie不过期。如果不设置expires，则退出浏览器的时候自动删除cookie
-            cookie.set('login_token', response.data.data.accountToken, { expires: 7, domain: 'localhost' }) // 115.29.209.156 localhost
+            cookie.set('login_token', response.data.data.accountToken, { expires: 7, domain: '115.29.209.156' }) // 115.29.209.156 localhost
           } else {
-            cookie.set('login_token', response.data.data.accountToken, { domain: 'localhost' }) // 115.29.209.156 localhost
+            cookie.set('login_token', response.data.data.accountToken, { domain: '115.29.209.156' }) // 115.29.209.156 localhost
           }
 
           if (cookie.get('login_token')) { 
@@ -207,7 +207,7 @@ export default {
               this.idAndUsername.id = this.accountInfo.id
               this.idAndUsername.username = this.accountInfo.username
 
-              cookie.set('user_info', this.idAndUsername, { domain: 'localhost' })
+              cookie.set('user_info', this.idAndUsername, { domain: '115.29.209.156' })
               this.$router.push({ path: '/' })
             })
           }

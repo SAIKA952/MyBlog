@@ -209,10 +209,16 @@ public class BlogController {
         return Res.ok();
     }
 
-    // 根据用户id查询用户的所有博客
-    @GetMapping("/getAllBlogsByUserId/{userId}")
-    public Res getAllBlogsByUserId(@PathVariable Integer userId) {
-        List<Blog> blogList = blogService.getAllBlogsByUserId(userId);
+    // 根据用户id查询用户的所有博客（带上博客的审核状态）
+    @GetMapping("/getAllBlogsByUserId/{userId}/{isWithIdentify}")
+    public Res getAllBlogsByUserId(@PathVariable Integer userId, @PathVariable Integer isWithIdentify) {
+        List<Blog> blogList = new ArrayList<>();
+        if (isWithIdentify == 1) { // 查看自己主页，带上博客的审核信息
+            blogList = blogService.getAllBlogsByUserId(userId);
+        } else { // 查看他人主页，不带上审核信息
+            blogList = blogService.getAllBlogsByUserIdWithoutIdentify(userId);
+        }
+
         List<Index> indexList = new ArrayList<>();
         int count = blogList.size();
 
@@ -249,6 +255,7 @@ public class BlogController {
             index.setBlogId(blog.getId());
             index.setViews(blog.getViews());
             index.setCreateOn(blog.getCreateOn());
+            index.setBlogStatus(blog.getStatus());
 
             indexList.add(index);
         }

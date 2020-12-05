@@ -67,9 +67,14 @@
         select comments from blog where id = #{id}
     </select>
 
-<!--    根据用户id查找该用户的所有博客，按照浏览量降序排序-->
+<!--    根据用户id查找该用户的所有博客，按照发布时间降序排序-->
     <select id="getAllBlogsByUserId" resultType="java.util.List" resultMap="BlogMap">
-        select * from blog where author_id = #{id} and status = 1 order by views desc
+        select * from blog where author_id = #{id} and (status = 1 or status = -2 or status = -3) order by create_on desc
+    </select>
+
+<!--    根据用户id查找该用户的所有博客，按照发布时间降序排序，不带上博客的审核信息-->
+    <select id="getAllBlogsByUserIdWithoutIdentify" resultType="java.util.List" resultMap="BlogMap">
+        select * from blog where author_id = #{id} and status = 1 order by create_on desc
     </select>
 
 <!--    根据用户id查询该用户草稿箱里的博客-->

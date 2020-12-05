@@ -69,9 +69,9 @@ export default {
     })
   },
   // 根据用户id查询该用户的所有博客
-  getAllBlogsByUserId(userId) {
+  getAllBlogsByUserId(userId, isWithIdentify) {
     return request({
-      url: `/blog/getAllBlogsByUserId/${userId}`,
+      url: `/blog/getAllBlogsByUserId/${userId}/${isWithIdentify}`,
       method: 'get'
     })
   },

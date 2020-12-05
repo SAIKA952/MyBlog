@@ -54,6 +54,8 @@
                           >
                             <h3>{{ blog.blogTitle }}</h3>
                           </router-link>
+                          <el-tag v-if="blog.blogStatus === -2" type="info" style="float:right;" class="el-icon-warning-outline"> 审核中</el-tag>
+                          <el-tag v-if="blog.blogStatus === -3" type="danger" style="float:right;" class="el-icon-circle-close"> 审核未通过</el-tag>
                           <br />
                           <div style="color:#A9A9A9">{{ blog.blogContent }}</div>
                         </div>
@@ -291,13 +293,14 @@ export default {
         this.activeName = "first";
       }
     }
-    
+
+    this.getLoginInfo();
     this.getAllBlogsByUserId(this.userInfo.id);
     this.getLikedListByUserId(this.userInfo.id);
     this.getCollectListByUserId(this.userInfo.id);
     this.getFansListByUserId(this.userInfo.id);
     this.getFollowListByUserId(this.userInfo.id);
-    this.getLoginInfo();
+    
     if (this.userInfo.id === this.loginInfo.id) {
       // 如果当前用户页面是登录用户的用户页面，就查找草稿箱
       this.getDraftByUserId(this.loginInfo.id);
@@ -386,10 +389,27 @@ export default {
     },
     // 根据用户id查询用户的所有博客
     getAllBlogsByUserId(id) {
-      blogApi.getAllBlogsByUserId(id).then(response => {
+      var isWithIdentify = 0;
+      isWithIdentify = id == this.loginInfo.id ? 1 : 0;
+      blogApi.getAllBlogsByUserId(id, isWithIdentify).then(response => {
+        console.log(response.data.data)
         this.blogList = response.data.data.blogList; // 博客列表
         this.blogCount = response.data.data.blogCount; // 博客数
       });
+
+
+      // if (id === this.loginInfo.id) { // 如果是自己看自己的主页，就可以查看到博客的审核信息
+      //   blogApi.getAllBlogsByUserId(id).then(response => {
+      //     console.log(response.data.data)
+      //     this.blogList = response.data.data.blogList; // 博客列表
+      //     this.blogCount = response.data.data.blogCount; // 博客数
+      //   });
+      // } else { // 如果不是自己的主页，看不到他正在审核以及审核失败的博客
+      //   blogApi.getAllBlogsByUserIdWithoutIdentify(id).then(response => {
+
+      //   })
+      // }
+      
     },
   }
 };

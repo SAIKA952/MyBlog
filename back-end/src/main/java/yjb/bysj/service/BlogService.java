@@ -30,6 +30,8 @@ public interface BlogService {
 
     List<Blog> getDraftByUserId(Integer userId);
 
+    List<Blog> getAllBlogsByUserIdWithoutIdentify(Integer userId);
+
     Integer getBlogCountByUserId(Integer userId);
 
     List<Blog> searchAllBlogs();

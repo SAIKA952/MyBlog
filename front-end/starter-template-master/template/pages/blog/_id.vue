@@ -60,7 +60,8 @@
           </div>
         </div>
 
-        <div style="width:900px;left:23%;position:relative;float:left">
+<!-- 如果是本人，可以看到自己写的并且正在审核/审核失败的文章，别人看不到 -->
+        <div style="width:900px;left:23%;position:relative;float:left" v-if="blog.status === 1 || this.author.id === this.userInfo.id">
           <el-card shadow="hover">
             <br />
             <div style="left:25px;position:relative;">
@@ -98,6 +99,12 @@
                             <el-button slot="reference" type="text" style="color:#A9A9A9">删除</el-button>
                           </el-popconfirm>
                         </i>
+
+                        <el-divider v-if="blog.status === -2" direction="vertical" />
+                        <el-tag v-if="blog.status === -2" type="info" class="el-icon-warning-outline"> 审核中</el-tag>
+
+                        <el-divider v-if="blog.status === -3" direction="vertical" />
+                        <el-tag v-if="blog.status === -3" type="danger" class="el-icon-circle-close"> 审核失败</el-tag>
                       </p>
                     </div>
                     <br />
@@ -321,6 +328,18 @@
                 </div>
               </div>
             </div>
+          </el-card>
+        </div>
+
+<!-- 如果不是本人，看不到正在审核/审核失败的文章 -->
+        <div style="width:900px;left:23%;position:relative;float:left" v-if="blog.status !== 1 && this.author.id !== this.userInfo.id">
+          <el-card shadow="hover" style="height:655px;text-align:center;">
+            <el-tag type="info" style="position:relative;top:240px">
+              <p style="font-size:20px" class="el-icon-warning-outline">
+                该博客暂时无法访问
+              </p>
+              
+              </el-tag>
           </el-card>
         </div>
       </div>

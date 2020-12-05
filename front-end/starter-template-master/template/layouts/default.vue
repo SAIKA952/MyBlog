@@ -132,9 +132,9 @@ export default {
       if (cookie.get('login_token')) {
         if (command === 'logout') {
           // 清空cookie信息
-          cookie.remove('login_token' , { domain: 'localhost' })
-          cookie.remove('login_info' , { domain: 'localhost' })
-          cookie.remove('user_info' , { domain: 'localhost' })
+          cookie.remove('login_token' , { domain: '115.29.209.156' })
+          cookie.remove('login_info' , { domain: '115.29.209.156' })
+          cookie.remove('user_info' , { domain: '115.29.209.156' })
           // cookie.set('login_token', '', { domain: 'localhost' }) // localhost 115.29.209.156
           // cookie.set('login_info', '', { domain: 'localhost' })
           // cookie.set('user_info', '', { domain: 'localhost' })
@@ -178,7 +178,7 @@ export default {
         this.accountInfo = response.data.data.accountInfo;
         this.idAndUsername.id = this.accountInfo.id
         this.idAndUsername.username = this.accountInfo.username
-        cookie.set('user_info', this.idAndUsername, { domain: 'localhost' })
+        cookie.set('user_info', this.idAndUsername, { domain: '115.29.209.156' })
       });
     },
     login() {

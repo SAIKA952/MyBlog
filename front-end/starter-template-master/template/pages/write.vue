@@ -144,6 +144,7 @@ export default {
     // 修改博客
     update() {
       console.log(this.form)
+      this.form.status = -2 // 设置状态为-2，表示正在审核
       blogApi.updateBlog(this.form).then(response => {
         this.$message({
           message: "修改成功",

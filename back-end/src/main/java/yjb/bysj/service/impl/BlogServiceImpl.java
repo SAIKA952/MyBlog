@@ -78,6 +78,12 @@ public class BlogServiceImpl implements BlogService {
         return list;
     }
 
+    @Override
+    public List<Blog> getAllBlogsByUserIdWithoutIdentify(Integer userId) {
+        List<Blog> list = blogMapper.getAllBlogsByUserIdWithoutIdentify(userId);
+        return list;
+    }
+
     // 根据用户id获取该用户写的博客数量
     @Override
     public Integer getBlogCountByUserId(Integer userId) {
