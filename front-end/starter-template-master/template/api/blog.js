@@ -10,9 +10,9 @@ export default {
     })
   },
   // 查找所有博客
-  searchAll() {
+  searchAll(page) {
     return request({
-      url: `/blog/searchAll`,
+      url: `/blog/searchAll/${page}`,
       method: 'get'
     })
   },

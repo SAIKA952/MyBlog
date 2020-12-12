@@ -37,8 +37,9 @@ public class BlogController {
     private LikedService likedService;
 
     // 查找所有博客
-    @GetMapping("/searchAll")
-    public Res searchAll() {
+    @GetMapping("/searchAll/{page}")
+    public Res searchAll(@PathVariable Integer page) {
+        PageHelper.startPage(page, 8);
         List<Blog> blogs = blogService.searchAll(); // 查找所有博客
         List<Index> indexList = new ArrayList<>(); // 存放首页显示数据
 
@@ -77,7 +78,10 @@ public class BlogController {
             indexList.add(index);
         }
 
-        return Res.ok().data("indexList", indexList);
+        PageInfo pageInfo = new PageInfo(blogs, 5);
+        pageInfo.setList(indexList);
+
+        return Res.ok().data("pageInfo", pageInfo);
     }
 
     // 博客提交/保存

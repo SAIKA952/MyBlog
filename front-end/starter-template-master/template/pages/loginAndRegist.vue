@@ -142,7 +142,7 @@ export default {
     } else {
       this.activeName = "second";
     }
-    // this.isLogin()
+    this.isLogin()
   },
   methods: {
     // 验证手机号是否合法
@@ -207,7 +207,12 @@ export default {
               this.idAndUsername.id = this.accountInfo.id
               this.idAndUsername.username = this.accountInfo.username
 
-              cookie.set('user_info', this.idAndUsername, { domain: '115.29.209.156' })
+              if (this.rememberMe) {
+                cookie.set('user_info', this.idAndUsername, { expires: 7, domain: '115.29.209.156' })
+              } else {
+                cookie.set('user_info', this.idAndUsername, { domain: '115.29.209.156' })
+              }
+              
               this.$router.push({ path: '/' })
             })
           }
