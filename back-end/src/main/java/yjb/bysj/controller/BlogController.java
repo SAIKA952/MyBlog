@@ -120,14 +120,18 @@ public class BlogController {
         blogService.addViews(blogoId);
         Blog blog = blogService.getBlogInfoById(blogoId);
 
-        // 根据作者id获取作者的信息
-        Integer authorId = blog.getAuthorId();
-        Account authorInfo = accountService.getAccountInfoById(authorId);
+        if (null != blog) {
+            // 根据作者id获取作者的信息
+            Integer authorId = blog.getAuthorId();
+            Account authorInfo = accountService.getAccountInfoById(authorId);
 
-        // 根据博客id获取该博客的评论数
-        Integer count = commentService.getCommentsCountByBlogId(blogoId);
+            // 根据博客id获取该博客的评论数
+            Integer count = commentService.getCommentsCountByBlogId(blogoId);
+            return Res.ok().data("blog", blog).data("authorInfo", authorInfo).data("commentCount", count);
+        } else {
+            return Res.ok().message("该博客不存在");
+        }
 
-        return Res.ok().data("blog", blog).data("authorInfo", authorInfo).data("commentCount", count);
     }
 
     // 查找内容
