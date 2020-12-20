@@ -22,7 +22,7 @@ public class MessageServiceImpl implements MessageService {
         if(StringUtils.isEmpty(phone)) { return false; }
 
         DefaultProfile profile = DefaultProfile.getProfile(
-                "default", "LTAI4GDfHSLGr5BHF4Hwrjy2" ,"nR7QRJTL88oD7j3lOsrExBNyB5apwe");
+                "default", "xxx" ,"xxx");
         IAcsClient client = new DefaultAcsClient(profile);
 
         // 设置相关固定的参数
