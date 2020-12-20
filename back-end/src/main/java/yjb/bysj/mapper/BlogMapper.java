@@ -54,4 +54,7 @@ public interface BlogMapper {
 
     // 查找正在审核的文章
     List<Blog> searchCheckingBlog();
+
+    // 获取排行榜数据（取前十）
+    List<Blog> getChampion();
 }

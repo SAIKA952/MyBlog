@@ -69,9 +69,9 @@ export default {
     })
   },
   // 根据用户id查询该用户的所有博客
-  getAllBlogsByUserId(userId, isWithIdentify) {
+  getAllBlogsByUserId(userId, isWithIdentify, page) {
     return request({
-      url: `/blog/getAllBlogsByUserId/${userId}/${isWithIdentify}`,
+      url: `/blog/getAllBlogsByUserId/${userId}/${isWithIdentify}/${page}`,
       method: 'get'
     })
   },
@@ -100,6 +100,27 @@ export default {
   searchCheckingBlog() {
     return request({
       url: `/blog/searchCheckingBlog`,
+      method: 'get'
+    })
+  },
+  // 获取用户的博客数（主页显示）
+  getBlogCountByUserId(userId) {
+    return request({
+      url: `/blog/getBlogCountByUserId/${userId}`,
+      method: 'get'
+    })
+  },
+  // 统计该用户所有博客的浏览数
+  getAllBlogsViewsCountByUserId(userId) {
+    return request({
+      url: `/blog/getAllBlogsViewsCountByUserId/${userId}`,
+      method: 'get'
+    })
+  },
+  // 获取排行榜数据（按浏览数取前十）
+  getChampion() {
+    return request({
+      url: `/blog/champion`,
       method: 'get'
     })
   }

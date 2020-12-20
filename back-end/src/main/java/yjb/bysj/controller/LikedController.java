@@ -213,4 +213,50 @@ public class LikedController {
         return Res.ok().data("collectList", indexList).data("count", indexList.size());
     }
 
+    // 根据用户id获取用户收藏的文章数
+    @GetMapping("/getCollectCountByUserId/{userId}")
+    public Res getCollectCountByUserId(@PathVariable Integer userId) {
+        Integer count = likedService.getCollectCountByUserId(userId);
+        return Res.ok().data("collectCount", count);
+    }
+
+    // 根据用户id获取用户点赞的文章数
+    @GetMapping("/getLikedCountByUserId/{userId}")
+    public Res getLikedCountByUserId(@PathVariable Integer userId) {
+        Integer count = likedService.getLikedCountByUserId(userId);
+        return Res.ok().data("likedCount", count);
+    }
+
+    // 根据用户id统计该用户的所有文章获取的点赞数（主页显示）
+    @GetMapping("/getAllBlogsLikedCountByUserId/{userId}")
+    public Res getAllBlogsLikedCountByUserId(@PathVariable Integer userId) {
+
+        // 先获取该用户的所有文章
+        List<Blog> blogList = blogService.getAllBlogsByUserIdWithoutIdentify(userId);
+
+        // 遍历该用户的所有文章，调用方法获取点赞数
+        int count = 0;
+        for (Blog blog : blogList) {
+            count += likedService.getLikedCountByBlogId(blog.getId());
+        }
+
+        return Res.ok().data("count", count);
+    }
+
+    // 根据用户id统计该用户的所有文章获取的收藏数（主页显示）
+    @GetMapping("/getAllBlogsCollectCountByUserId/{userId}")
+    public Res getAllBlogsCollectCountByUserId(@PathVariable Integer userId) {
+
+        // 先获取该用户的所有博客
+        List<Blog> blogList = blogService.getAllBlogsByUserIdWithoutIdentify(userId);
+
+        // 遍历所有文章
+        int count = 0;
+        for (Blog blog : blogList) {
+            count += likedService.getCollectCountByBlogId(blog.getId());
+        }
+
+        return Res.ok().data("count", count);
+    }
+
 }

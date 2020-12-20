@@ -107,4 +107,10 @@ public class BlogServiceImpl implements BlogService {
         List<Blog> list = blogMapper.searchCheckingBlog();
         return list;
     }
+
+    @Override
+    public List<Blog> getChampion() {
+        List<Blog> blogs = blogMapper.getChampion();
+        return blogs;
+    }
 }

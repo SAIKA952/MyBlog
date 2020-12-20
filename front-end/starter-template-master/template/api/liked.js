@@ -57,5 +57,33 @@ export default {
       url: `/liked/getCollectListByUserId/${userId}`,
       method: 'get'
     })
+  },
+  // 根据用户id获取用户收藏的文章数
+  getCollectCountByUserId(userId) {
+    return request({
+      url: `/liked/getCollectCountByUserId/${userId}`,
+      method: 'get'
+    })
+  },
+  // 根据用户id获取用户点赞的文章数
+  getLikedCountByUserId(userId) {
+    return request({
+      url: `/liked/getLikedCountByUserId/${userId}`,
+      method: 'get'
+    })
+  },
+  // 根据用户id统计该用户的所有文章获取的点赞数
+  getAllBlogsLikedCountByUserId(userId) {
+    return request({
+      url: `/liked/getAllBlogsLikedCountByUserId/${userId}`,
+      method: 'get'
+    })
+  },
+  // 根据用户id统计该用户的所有文章获取的收藏数
+  getAllBlogsCollectCountByUserId(userId) {
+    return request({
+      url: `/liked/getAllBlogsCollectCountByUserId/${userId}`,
+      method: 'get'
+    })
   }
 }

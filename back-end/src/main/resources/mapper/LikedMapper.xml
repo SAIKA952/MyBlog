@@ -111,7 +111,7 @@
 
 <!--    根据用户id获取该用户点赞的文章数-->
     <select id="getLikedCountByUserId" resultType="java.lang.Integer">
-        select count(*) from liked where user_id = #{userId} and status = 1
+        select count(*) from liked where user_id = #{userId} and status = 1 and comment_id is null
     </select>
 
 <!--    根据用户id获取该用户收藏的文章数-->

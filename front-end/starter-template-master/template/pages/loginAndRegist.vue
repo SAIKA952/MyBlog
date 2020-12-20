@@ -278,7 +278,7 @@ export default {
     },
     // 判断用户是否已经登录
     isLogin() {
-      if (cookie.get("login_token")) {
+      if (cookie.get("user_info")) {
         this.$router.push({ path: '/' })
       }
     }

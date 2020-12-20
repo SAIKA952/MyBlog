@@ -40,4 +40,7 @@ public interface BlogService {
     void deleteBlogByBlogId(Integer blogId);
 
     List<Blog> searchCheckingBlog();
+
+    // 获取排行榜数据（取前十）
+    List<Blog> getChampion();
 }

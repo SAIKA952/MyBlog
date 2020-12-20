@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import yjb.bysj.common_utils.Res;
 import yjb.bysj.entity.Account;
+import yjb.bysj.entity.Blog;
 import yjb.bysj.entity.Comment;
 import yjb.bysj.entity.util.CommentInfo;
 import yjb.bysj.service.AccountService;
+import yjb.bysj.service.BlogService;
 import yjb.bysj.service.CommentService;
 
 import java.util.*;
@@ -86,7 +88,6 @@ public class CommentController {
 
         return Res.ok();
     }
-
 
 
 }

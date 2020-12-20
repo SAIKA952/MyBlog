@@ -101,4 +101,9 @@
     <select id="searchCheckingBlog" parameterType="java.util.List" resultMap="BlogMap">
         select * from blog where status = -2
     </select>
+
+<!--    获取排行榜数据（取前十条）-->
+    <select id="getChampion" parameterType="java.util.List" resultMap="BlogMap">
+        select * from blog order by views desc limit 10
+    </select>
 </mapper>
