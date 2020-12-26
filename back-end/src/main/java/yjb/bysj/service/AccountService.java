@@ -36,4 +36,7 @@ public interface AccountService {
 
     // 删除记录
     void deleteAccount(Integer userId);
+
+    // 管理员登录
+    Res adminLogin(String username, String password);
 }

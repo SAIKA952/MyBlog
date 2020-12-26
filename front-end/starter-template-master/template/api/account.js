@@ -75,5 +75,13 @@ export default {
       url: `/account/deleteAccount/${userId}`,
       method: 'get'
     })
+  },
+  // 管理员登录
+  adminLogin(loginForm) {
+    return request({
+      url: `/account/adminLogin`,
+      method: 'post',
+      data: loginForm
+    })
   } 
 }

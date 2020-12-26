@@ -33,7 +33,8 @@ public class AccountServiceImpl implements AccountService {
         account.setCreateOn(timestamp);
         account.setUpdateOn(timestamp);
         account.setStatus(0); // 设置账号状态
-        System.out.println(account);
+        account.setPermission(0);
+//        System.out.println(account);
         accountMapper.userRegist(account);
     }
 
@@ -62,10 +63,6 @@ public class AccountServiceImpl implements AccountService {
         Account accountInfoByUsername = accountMapper.getAccountInfoByUsername(username);
 
         if(accountInfoByUsername.getPassword().equals(password)) {
-
-            if (username.equals("myblogadmin")) { // 管理员登录
-                return Res.ok().code(6666);
-            }
 
             // 将根据用户id和用户名生成token字符串
             String jwtToken = JwtUtils.getJwtToken(accountInfoByUsername.getId().toString(), accountInfoByUsername.getUsername());
@@ -113,6 +110,29 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(Integer userId) {
         accountMapper.deleteAccount(userId);
+    }
+
+    @Override
+    public Res adminLogin(String username, String password) {
+//        判断用户名是否存在
+        if(accountMapper.isUsernameExist(username) == 0) {
+//            设置状态码20002表示输入的用户名不存在
+            return Res.error().code(20002);
+        }
+
+        Account account = accountMapper.getAccountInfoByUsername(username);
+        if (account.getPassword().equals(password)) {
+
+            if (account.getPermission() == 2) {
+                return Res.ok().data("account", account);
+            } else {
+                // 20005没有登录权限
+                return Res.error().code(20005);
+            }
+
+        }
+        //        密码不正确的状态码
+        return Res.error().code(20003);
     }
 
 }

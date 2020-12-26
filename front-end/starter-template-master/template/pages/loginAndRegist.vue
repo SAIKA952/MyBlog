@@ -114,7 +114,7 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 8, message: "长度在 3 到 8 个字符", trigger: "blur" }
+          { min: 3, max: 12, message: "长度在 3 到 12 个字符", trigger: "blur" }
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
@@ -223,7 +223,7 @@ export default {
     },
     // 用户注册
     regist() {
-      if (this.registForm.username.trim() === '' || this.registForm.username.length < 3 || this.registForm.username.length > 8) {
+      if (this.registForm.username.trim() === '' || this.registForm.username.length < 3 || this.registForm.username.length > 12) {
         this.$message({
           message: "用户名不合法",
           type: "error"

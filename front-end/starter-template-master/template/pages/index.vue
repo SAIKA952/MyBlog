@@ -137,9 +137,10 @@
           </el-card>
         </div>
       </div>
-
+  
+      <br />
       <div>
-        <div style="position:relative;top:30px">
+        <div>
           <el-card shadow="hover">
             <P style="color:	#8B008B;text-align:center"><i class="el-icon-trophy"></i> 排行榜</P>
             <br />
@@ -171,6 +172,15 @@
           </el-card>
         </div>
       </div>
+
+      <!-- <br />
+      <div>
+        <div>
+          <el-card shadow="hover">
+            
+          </el-card>
+        </div>
+      </div> -->
 
     </div>
   </div>

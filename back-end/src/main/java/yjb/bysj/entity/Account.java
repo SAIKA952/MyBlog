@@ -6,7 +6,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@Data // 自动生成getter、setter方法，有参构造无参构造以及toString()方法
+@Data // 自动生成getter、setter方法，有参无参构造以及toString()方法
 public class Account {
 
     private Integer id;
@@ -27,6 +27,8 @@ public class Account {
     private Date birthday;
 
     private Integer status;
+
+    private Integer permission;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") // @JsonFormat转换时间格式并更改时区，将"2020-09-13T08:07:44"转换为"2020-09-13 16:07:44"
     private Timestamp lastLogin;

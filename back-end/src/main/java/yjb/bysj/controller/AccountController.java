@@ -154,5 +154,13 @@ public class AccountController {
         return Res.ok();
     }
 
+    // 管理员登陆（permission = 2）
+    @PostMapping("/adminLogin")
+    public Res adminLogin(@RequestBody Account account) {
+        String username = account.getUsername();
+        String password = account.getPassword();
+        Res res = accountService.adminLogin(username, password);
+        return res;
+    }
 
 }
