@@ -68,10 +68,17 @@ export default {
       data: form
     })
   },
-  // 根据用户id查询该用户的所有博客
-  getAllBlogsByUserId(userId, isWithIdentify, page) {
+  // 根据用户id查询该用户的所有博客（按照时间降序）
+  getAllBlogsByUserId(userId, page) {
     return request({
-      url: `/blog/getAllBlogsByUserId/${userId}/${isWithIdentify}/${page}`,
+      url: `/blog/getAllBlogsByUserId/${userId}/${page}`,
+      method: 'get'
+    })
+  },
+  // 根据用户id查询该用户的所有博客（按照浏览量降序）
+  getHotBlogsByUserId(userId, page) {
+    return request({
+      url: `/blog/getHotBlogsByUserId/${userId}/${page}`,
       method: 'get'
     })
   },

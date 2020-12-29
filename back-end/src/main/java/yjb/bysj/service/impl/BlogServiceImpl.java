@@ -67,6 +67,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> getHotBlogsByUserId(Integer userId) {
+        List<Blog> list = blogMapper.getHotBlogsByUserId(userId);
+        return list;
+    }
+
+    @Override
     public List<Blog> getAllBlogsByUserId(Integer userId) {
         List<Blog> list = blogMapper.getAllBlogsByUserId(userId);
         return list;
@@ -78,11 +84,6 @@ public class BlogServiceImpl implements BlogService {
         return list;
     }
 
-    @Override
-    public List<Blog> getAllBlogsByUserIdWithoutIdentify(Integer userId) {
-        List<Blog> list = blogMapper.getAllBlogsByUserIdWithoutIdentify(userId);
-        return list;
-    }
 
     // 根据用户id获取该用户写的博客数量
     @Override

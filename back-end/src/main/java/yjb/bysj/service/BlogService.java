@@ -30,8 +30,6 @@ public interface BlogService {
 
     List<Blog> getDraftByUserId(Integer userId);
 
-    List<Blog> getAllBlogsByUserIdWithoutIdentify(Integer userId);
-
     Integer getBlogCountByUserId(Integer userId);
 
     List<Blog> searchAllBlogs();
@@ -43,4 +41,7 @@ public interface BlogService {
 
     // 获取排行榜数据（取前十）
     List<Blog> getChampion();
+
+    // 根据用户id获取该用户的热门文章（按照浏览数）
+    List<Blog> getHotBlogsByUserId(Integer userId);
 }

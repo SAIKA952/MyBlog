@@ -34,11 +34,8 @@ public interface BlogMapper {
     // 根据博客id查找该博客评论数
     Integer getCommentsByBlogId(Integer blogId);
 
-    // 根据用户id查找该用户的所有博客，按照时间降序排序，查看自己的会显示博客的审核状态
+    // 根据用户id查找该用户的所有博客，按照时间降序排序
     List<Blog> getAllBlogsByUserId(Integer userId);
-
-    // 根据用户id查找该用户的所有博客，按照时间降序排序，他人主页不带上审核状态
-    List<Blog> getAllBlogsByUserIdWithoutIdentify(Integer userId);
 
     // 根据用户id查询该用户草稿箱里的博客
     List<Blog> getDraftByUserId(Integer userId);
@@ -57,4 +54,7 @@ public interface BlogMapper {
 
     // 获取排行榜数据（取前十）
     List<Blog> getChampion();
+
+    // 根据用户id获取该用户的热门文章（按照浏览数排序）
+    List<Blog> getHotBlogsByUserId(Integer userId);
 }

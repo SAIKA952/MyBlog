@@ -216,17 +216,67 @@ public class BlogController {
         return Res.ok();
     }
 
-    // 根据用户id查询用户的所有博客（带上博客的审核状态）
-    @GetMapping("/getAllBlogsByUserId/{userId}/{isWithIdentify}/{page}")
-    public Res getAllBlogsByUserId(@PathVariable Integer userId, @PathVariable Integer isWithIdentify, @PathVariable Integer page) {
+    // 根据用户id查询用户的所有博客（查找最新）
+    @GetMapping("/getAllBlogsByUserId/{userId}/{page}")
+    public Res getAllBlogsByUserId(@PathVariable Integer userId, @PathVariable Integer page) {
         List<Blog> blogList = new ArrayList<>();
-        if (isWithIdentify == 1) { // 查看自己主页，带上博客的审核信息
-            PageHelper.startPage(page, 8);
-            blogList = blogService.getAllBlogsByUserId(userId);
-        } else { // 查看他人主页，不带上审核信息
-            PageHelper.startPage(page, 8);
-            blogList = blogService.getAllBlogsByUserIdWithoutIdentify(userId);
+        PageHelper.startPage(page, 8);
+        blogList = blogService.getAllBlogsByUserId(userId);
+
+
+        List<Index> indexList = new ArrayList<>();
+        int count = blogList.size();
+
+        for (int i = 0; i < blogList.size(); i++) {
+            Index index = new Index();
+            Blog blog = blogList.get(i);
+
+            // 截取内容前80个字
+            String content = blog.getContent();
+            if (content.length() > 80) {
+                content = content.substring(0, 80) + "...";
+            }
+//            content = content.replaceAll("#", "").replaceAll("`", "");
+            index.setBlogContent(content);
+
+            // 截取标题前40个字
+            String title = blog.getTitle();
+            if (title.length() > 40) {
+                title = title.substring(0, 40) + "...";
+            }
+            index.setBlogTitle(title);
+
+            // 获取评论数
+            Integer commentsCount = commentService.getCommentsCountByBlogId(blog.getId());
+            index.setCommentsCount(commentsCount);
+
+            // 获取点赞数
+            Integer likedCount = likedService.getLikedCountByBlogId(blog.getId());
+            index.setLikedCount(likedCount);
+
+            // 获取收藏数
+            Integer collectCount = likedService.getCollectCountByBlogId(blog.getId());
+            index.setCollectCount(collectCount);
+
+            index.setBlogId(blog.getId());
+            index.setViews(blog.getViews());
+            index.setCreateOn(blog.getCreateOn());
+            index.setBlogStatus(blog.getStatus());
+
+            indexList.add(index);
         }
+        PageInfo pageInfo = new PageInfo(blogList, 5);
+        pageInfo.setList(indexList);
+
+        return Res.ok().data("pageInfo", pageInfo);
+    }
+
+    // 根据用户id查询用户的所有博客（查找最热）
+    @GetMapping("/getHotBlogsByUserId/{userId}/{page}")
+    public Res getHotBlogsByUserId(@PathVariable Integer userId, @PathVariable Integer page) {
+        List<Blog> blogList = new ArrayList<>();
+        PageHelper.startPage(page, 8); 
+        blogList = blogService.getHotBlogsByUserId(userId);
 
         List<Index> indexList = new ArrayList<>();
         int count = blogList.size();
@@ -293,7 +343,7 @@ public class BlogController {
     // 统计该用户所有博客的浏览数
     @GetMapping("/getAllBlogsViewsCountByUserId/{userId}")
     public Res getAllBlogsViewsCountByUserId(@PathVariable Integer userId) {
-        List<Blog> blogs = blogService.getAllBlogsByUserIdWithoutIdentify(userId);
+        List<Blog> blogs = blogService.getAllBlogsByUserId(userId);
 
         int count = 0;
         for (Blog blog : blogs) {

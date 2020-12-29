@@ -232,7 +232,7 @@ public class LikedController {
     public Res getAllBlogsLikedCountByUserId(@PathVariable Integer userId) {
 
         // 先获取该用户的所有文章
-        List<Blog> blogList = blogService.getAllBlogsByUserIdWithoutIdentify(userId);
+        List<Blog> blogList = blogService.getAllBlogsByUserId(userId);
 
         // 遍历该用户的所有文章，调用方法获取点赞数
         int count = 0;
@@ -248,7 +248,7 @@ public class LikedController {
     public Res getAllBlogsCollectCountByUserId(@PathVariable Integer userId) {
 
         // 先获取该用户的所有博客
-        List<Blog> blogList = blogService.getAllBlogsByUserIdWithoutIdentify(userId);
+        List<Blog> blogList = blogService.getAllBlogsByUserId(userId);
 
         // 遍历所有文章
         int count = 0;
