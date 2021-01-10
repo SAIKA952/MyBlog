@@ -44,7 +44,7 @@
 
 <!--    按照输入的内容进行查询-->
     <select id="searchContent" resultType="java.util.List" resultMap="BlogMap">
-        select * from blog where title like "%"#{content}"%"
+        select * from blog where title like "%"#{content}"%" and status = 1
     </select>
 
 <!--    根据作者id查找作者的所有博客，按照浏览量降序排序-->
@@ -110,5 +110,12 @@
 <!--    获取排行榜数据（取前十条）-->
     <select id="getChampion" parameterType="java.util.List" resultMap="BlogMap">
         select * from blog order by views desc limit 10
+    </select>
+
+<!--    根据用户id获取该用户所有文章的浏览量-->
+    <select id="getAllBlogsViewsCountByUserId" resultType="java.lang.Integer">
+        select sum(views) from `blog`
+        where status = 1
+        group by author_id having author_id = #{userId}
     </select>
 </mapper>

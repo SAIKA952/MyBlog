@@ -43,5 +43,12 @@ export default {
       url: `/follow/getFollowCountByUserId/${userId}`,
       method: 'get'
     })
+  },
+  // 根据用户id获取该用户的粉丝数
+  getFansCountByUserId(userId) {
+    return request({
+      url: `/follow/getFansCountByUserId/${userId}`,
+      method: 'get'
+    })
   }
 }

@@ -57,4 +57,7 @@ public interface BlogMapper {
 
     // 根据用户id获取该用户的热门文章（按照浏览数排序）
     List<Blog> getHotBlogsByUserId(Integer userId);
+
+    // 根据用户id获取该用户所有文章的浏览量
+    Integer getAllBlogsViewsCountByUserId(Integer userId);
 }

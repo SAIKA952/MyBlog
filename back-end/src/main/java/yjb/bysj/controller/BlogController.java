@@ -17,6 +17,8 @@ import yjb.bysj.service.LikedService;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController // 相当于@Controller和@ResponseBody两个注解
 @RequestMapping("/blog")
@@ -62,15 +64,28 @@ public class BlogController {
             Integer collectCount = likedService.getCollectCountByBlogId(blog.getId());
             index.setCollectCount(collectCount);
 
-            // 截取字符串
+            // 截取博客内容字符串
             String content = blog.getContent();
-            if(blog.getContent().length() >= 100) {
+            // 正则匹配内容中的第一张图片的url，在主页上显示
+            String firstImgURL = matchFirstImg(content);
+            index.setImgURL(firstImgURL);
+
+            // 将一些特殊符号去掉
+            content = content.replaceAll("#", "").replaceAll("!\\[(.*?)\\]\\((.*?)\\)", "").replaceAll(" ", "");
+
+            if(content.length() >= 100) {
                 content = content.trim().substring(0, 100) + "...";
             }
             index.setBlogContent(content);
 
+            // 截取博客标题字符串
+            String title = blog.getTitle();
+            if (title.length() > 30) {
+                title = blog.getTitle().substring(0, 30) + "...";
+            }
+            index.setBlogTitle(title);
+
             index.setViews(blog.getViews());
-            index.setBlogTitle(blog.getTitle());
             index.setBlogId(blog.getId());
             index.setCreateOn(blog.getCreateOn());
 
@@ -343,12 +358,7 @@ public class BlogController {
     // 统计该用户所有博客的浏览数
     @GetMapping("/getAllBlogsViewsCountByUserId/{userId}")
     public Res getAllBlogsViewsCountByUserId(@PathVariable Integer userId) {
-        List<Blog> blogs = blogService.getAllBlogsByUserId(userId);
-
-        int count = 0;
-        for (Blog blog : blogs) {
-            count += blog.getViews();
-        }
+        Integer count = blogService.getAllBlogsViewsCountByUserId(userId);
 
         return Res.ok().data("count", count);
     }
@@ -396,6 +406,31 @@ public class BlogController {
         List<Blog> list = blogService.searchCheckingBlog();
 
         return Res.ok().data("checkingBlog", list);
+    }
+
+    // 正则匹配博客内容的markdown语法![]()的第一张图片URL
+    public String matchFirstImg(String content) {
+        String regex1 = "!\\[(.*?)\\]\\((.*?)\\)";
+        Pattern pattern1 = Pattern.compile(regex1);
+        Matcher matcher1 = pattern1.matcher(content);
+
+        String res = "";
+        String firstImgURL = "";
+        try {
+            matcher1.find();
+            res = matcher1.group();
+
+            String regex2 = "(?<=\\()\\S+(?=\\))";
+            Pattern pattern2 = Pattern.compile(regex2);
+            Matcher matcher2 = pattern2.matcher(res);
+            matcher2.find();
+            firstImgURL = matcher2.group();
+
+        } catch (Exception e) {
+            firstImgURL = "";
+        }
+
+        return firstImgURL;
     }
 
 }

@@ -131,7 +131,7 @@ export default {
         formdata.append('file', file);
         this.img_file[pos] = file;
         axios({
-          url: 'http://115.29.209.156/oss',
+          url: 'http://115.29.209.156:8001/oss',
           method: 'post',
           data: formdata,
           headers: { 'Content-Type': 'multipart/form-data' },

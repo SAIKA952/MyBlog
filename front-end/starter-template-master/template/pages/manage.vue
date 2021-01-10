@@ -1,8 +1,8 @@
 <template>
   <div>
     <div style="width:1300px;left:15%;position:relative;top:80px">
-      <div style="text-align:center">
-        <h1 style="cursor:pointer" @click="searchAllAccount(1)">后台管理系统</h1>
+      <div style="text-align:center;position:relative;">
+        <h1 style="cursor:pointer;color:black" @click="searchAllAccount(1)">后台管理系统</h1>
       </div>
       <br />
       <el-tabs v-model="activeName" type="card">
@@ -233,7 +233,7 @@
           <no-ssr>
               <mavon-editor
                 :toolbarsFlag="false"
-                defaultOpen="preview"
+                defaultOpen="edit"
                 :boxShadow="false"
                 :subfield="false"
                 v-model="editCheckingForm.content"
@@ -356,6 +356,7 @@ export default {
     check(scope, row) {
       this.dialogCheckingBlogFormVisible = true
       this.editCheckingForm = scope
+      console.log(this.editCheckingForm.content)
     },
     // 查找正在审核的文章
     searchCheckingBlog() {

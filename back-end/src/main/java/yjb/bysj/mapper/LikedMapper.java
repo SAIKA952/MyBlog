@@ -58,4 +58,10 @@ public interface LikedMapper {
 
     // 根据用户id获取该用户收藏的文章数
     Integer getCollectCountByUserId(Integer userId);
+
+    // 根据用户id获取该用户的文章被收藏的数量
+    Integer getAllBlogsCollectCountByUserId(Integer userId);
+
+    // 根据用户id获取该用户的文章被点赞的数量
+    Integer getAllBlogsLikedCountByUserId(Integer userId);
 }

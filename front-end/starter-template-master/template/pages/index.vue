@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-backtop />
-    <div style="position:relative;left:17%;top:20px;width:1000px;float:left;">
+    <div style="position:relative;left:16%;top:20px;width:1000px;float:left;">
       <div v-if="isPageLoading">
         <div>
           <el-card shadow="hover">
@@ -18,7 +18,7 @@
             <el-card shadow="hover">
               <div>
                 <div
-                  style="text-align:center;cursor:pointer;width:120px;display:inline-block;"
+                  style="text-align:center;cursor:pointer;width:140px;display:inline-block;"
                   @click="gotoUserPage(index.authorId)"
                 >
                   <div style="width:100%">
@@ -28,17 +28,17 @@
                     <div>{{ index.authorName }}</div>
                   </div>
                 </div>
-                <div style="left:20px;position:relative;display:inline-block;width:760px;">
+                <div style="left:20px;position:relative;display:inline-block;width:640px;">
                   <div>
                     <div
-                      style="position:absolute;top:-55px;cursor:pointer"
+                      style="position:absolute;top:-60px;cursor:pointer"
                       @click="gotoBLogPage(index.blogId)"
                     >
-                      <a style="text-decoration:none;color:black">{{ index.blogTitle }}</a>
-                      <p style="color:#808080;position:relative;top:10px;">{{ index.blogContent }}</p>
+                      <h1 id="title" style="text-decoration:none;">{{ index.blogTitle }}</h1>
+                      <p style="color:#808080;position:relative;top:10px;font-size:12px">{{ index.blogContent }}</p>
                     </div>
                   </div>
-                  <div style="float:right;font-size:13px;left:30px;top:20px;position:relative">
+                  <div style="float:left;font-size:13px;top:20px;position:relative">
                     <p style="color:#A9A9A9">
                       <i class="el-icon-caret-top">{{ index.likedCount }} 赞</i>
                       <el-divider direction="vertical" />
@@ -52,6 +52,7 @@
                     </p>
                   </div>
                 </div>
+                <el-image v-if="index.imgURL.length > 1" @click="gotoBLogPage(index.blogId)" :src="index.imgURL" style="float:right;width:140px;height:80px;cursor:pointer" fit="contain"></el-image>
                 <br />
               </div>
             </el-card>
@@ -74,12 +75,8 @@
       </div>
     </div>
 
-    <div style="float:left;position:relative;top:20px;left:18%;width:250px">
-      <!-- <div>
-        <el-card shadow="hover">
+    <div style="float:left;position:relative;top:20px;left:17%;width:250px">
 
-        </el-card>
-      </div> -->
       <div v-if="accountInfo.id > 0">
         <div>
           <el-card shadow="hover">
@@ -88,8 +85,8 @@
                 <el-avatar :size="40" :src="accountInfo.avatar" />
               </div>
 
-              <div style="position:relative;left:16px;top:-10px">
-                <h2 style="position:relative;">{{ accountInfo.username }}</h2>
+              <div style="position:relative;left:16px">
+                <h2 style="position:relative;font-size:16px">{{ accountInfo.username }}</h2>
                 <div style="color:#A9A9A9">
                   关注：{{ followCount }}
                   <el-divider direction="vertical" />
@@ -102,9 +99,9 @@
               <i class="el-icon-paperclip"></i>
             </el-divider>
             <div style="color:	#000080">
-              <h4 style="position:relative;height:30px">我的文章：{{ blogCount }}</h4>
-              <h4 style="position:relative;height:30px">我的收藏：{{ collectCount }}</h4>
-              <h4 style="position:relative;height:30px">我喜欢的文章：{{ likedCount }}</h4>
+              <h4 id="text1" @click="gotoMyPage(1)" style="position:relative;height:30px">我的文章：{{ blogCount }}</h4>
+              <h4 id="text2"  @click="gotoMyPage(2)" style="position:relative;height:30px">我的收藏：{{ collectCount }}</h4>
+              <h4 id="text3" @click="gotoMyPage(3)" style="position:relative;height:30px">我喜欢的文章：{{ likedCount }}</h4>
             </div>
             <el-divider>
               <i class="el-icon-medal"></i>
@@ -173,15 +170,6 @@
         </div>
       </div>
 
-      <!-- <br />
-      <div>
-        <div>
-          <el-card shadow="hover">
-            
-          </el-card>
-        </div>
-      </div> -->
-
     </div>
   </div>
 </template>
@@ -216,7 +204,9 @@ export default {
       allLikedCount: "",
       allCollectCount: "",
       allViewsCount: "",
-      championList: ""
+      championList: "",
+
+      imgURL: ""
     };
   },
   watch: {
@@ -299,7 +289,7 @@ export default {
     },
     // 获取用户粉丝数
     getFansCountByUserId(id) {
-      followApi.getFansByUserId(id).then(response => {
+      followApi.getFansCountByUserId(id).then(response => {
         this.fansCount = response.data.data.count;
       });
     },
@@ -346,6 +336,15 @@ export default {
         this.championList = response.data.data.championList
         this.isChampionLoading = false
       })
+    },
+    gotoMyPage(menu) {
+      if (menu === 1) {
+        this.$router.push({ path:'/user/' + this.loginInfo.id, query: { menu: 'blog' } })
+      } else if (menu === 2) {
+        this.$router.push({ path:'/user/' + this.loginInfo.id, query: { menu: 'collect' } })
+      } else if (menu === 3) {
+        this.$router.push({ path:'/user/' + this.loginInfo.id, query: { menu: 'like' } })
+      }
     }
   }
 };
@@ -363,6 +362,17 @@ h4:hover {
 #championTitle {
   text-decoration: none;
   color: #000000;
+}
+#text1:hover,#text2:hover,#text3:hover {
+  cursor: pointer;
+  color:mediumslateblue
+}
+#title{
+  font-size:20px
+}
+
+#title:hover {
+  color:#66B1FF
 }
 </style>
 

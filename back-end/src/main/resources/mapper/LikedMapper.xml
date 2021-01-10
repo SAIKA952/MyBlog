@@ -91,32 +91,42 @@
 
 <!--    根据用户id查询该用户点赞的文章-->
     <select id="getLikedListByUserId" resultType="java.util.List" resultMap="LikedMap">
-        select * from liked where user_id = #{userId} and status = 1 and comment_id is null order by create_on desc
+        select * from liked where user_id = #{userId} and comment_id is null order by create_on desc
     </select>
 
 <!--    根据博客id查找该博客的点赞数-->
     <select id="getLikedCountByBlogId" resultType="java.lang.Integer">
-        select count(*) from liked where blog_id = #{blogId} and status = 1 and comment_id is null
+        select count(*) from liked where blog_id = #{blogId} and comment_id is null
     </select>
 
 <!--    根据博客id查找该博客的收藏数-->
     <select id="getCollectCountByBlogId" resultType="java.lang.Integer">
-        select count(*) from collect where blog_id = #{blogId} and status = 1
+        select count(*) from collect where blog_id = #{blogId}
     </select>
 
 <!--    根据用户id查找该用户收藏的文章-->
     <select id="getCollectListByUserId" resultType="java.util.List" resultMap="CollectMap">
-        select * from collect where user_id = #{userId} and status = 1 order by create_on desc
+        select * from collect where user_id = #{userId} order by create_on desc
     </select>
 
 <!--    根据用户id获取该用户点赞的文章数-->
     <select id="getLikedCountByUserId" resultType="java.lang.Integer">
-        select count(*) from liked where user_id = #{userId} and status = 1 and comment_id is null
+        select count(*) from liked where user_id = #{userId} and status = 1
     </select>
 
 <!--    根据用户id获取该用户收藏的文章数-->
     <select id="getCollectCountByUserId" resultType="java.lang.Integer">
         select count(*) from collect where user_id = #{userId} and status = 1
+    </select>
+
+<!--    根据用户id获取该用户的文章被收藏的数量-->
+    <select id="getAllBlogsCollectCountByUserId" resultType="java.lang.Integer">
+        select count(*) from collect where blog_id in (select id from blog where author_id = #{userId} and status = 1) and status = 1
+    </select>
+
+<!--    根据用户id获取该用户的文章被收藏的数量-->
+    <select id="getAllBlogsLikedCountByUserId" resultType="java.lang.Integer">
+        select count(*) from liked where blog_id in (select id from blog where author_id = #{userId} and status = 1) and status = 1
     </select>
 
 </mapper>

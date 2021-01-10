@@ -5,7 +5,7 @@
 
     <div v-if="isTargetExist">
       <div>
-        <div style="left:20%;position:relative;width:200px;float:left;z-index:1">
+        <div style="left:18%;position:relative;width:240px;float:left;z-index:1">
           <div>
             <el-card class="box-card" shadow="hover">
               <div slot="header" class="clearfix" style="height:80px">
@@ -62,7 +62,7 @@
 
         <!-- 如果是本人，可以看到自己写的并且正在审核/审核失败的文章，别人看不到 -->
         <div v-if="!isBlogLoading">
-          <div style="width:900px;left:23%;position:relative;float:left" v-if="blog.status === 1 || this.author.id === this.userInfo.id">
+          <div style="width:1000px;left:20%;position:relative;float:left" v-if="blog.status === 1 || this.author.id === this.userInfo.id">
             <el-card shadow="hover">
               <br />
               <div style="left:25px;position:relative;">
@@ -131,20 +131,22 @@
               <br />
 
               <!-- 点赞/收藏 -->
-              <div style="left:35px;position:relative">
-                <el-button v-if="this.isLiked == 0" @click="like()">
-                  <i style="font-size:14px" class="el-icon-caret-top">{{ blogLikedCount }} 赞同</i>
-                </el-button>
-                <el-button v-if="this.isLiked == 1" type="primary" @click="like()">
-                  <i style="font-size:14px" class="el-icon-caret-top">{{ blogLikedCount }} 已赞同</i>
-                </el-button>
+              <div style="left:360px;position:relative;height:100px">
+                <div style="position:relative;top:30px">
+                  <el-button round v-if="this.isLiked == 0" @click="like()">
+                    <i style="font-size:14px" class="el-icon-caret-top">{{ blogLikedCount }} 赞同</i>
+                  </el-button>
+                  <el-button round v-if="this.isLiked == 1" type="primary" @click="like()">
+                    <i style="font-size:14px" class="el-icon-caret-top">{{ blogLikedCount }} 已赞同</i>
+                  </el-button>
 
-                <el-button v-if="this.isCollected == 0" @click="collect()">
-                  <i style="font-size:14px;" class="el-icon-star-off">{{ blogCollectCount }} 收藏</i>
-                </el-button>
-                <el-button v-if="this.isCollected == 1" type="primary" @click="collect()">
-                  <i style="font-size:14px;" class="el-icon-star-on">{{ blogCollectCount }} 已收藏</i>
-                </el-button>
+                  <el-button round v-if="this.isCollected == 0" @click="collect()">
+                    <i style="font-size:14px;" class="el-icon-star-off">{{ blogCollectCount }} 收藏</i>
+                  </el-button>
+                  <el-button round v-if="this.isCollected == 1" type="primary" @click="collect()">
+                    <i style="font-size:14px;" class="el-icon-star-on">{{ blogCollectCount }} 已收藏</i>
+                  </el-button>
+                </div>
               </div>
               <br />
 
@@ -175,11 +177,6 @@
 
                 <div style="position:relative;left:75px">
                   <i class="el-icon-chat-line-square">全部评论 {{ commentCount }}</i>
-                  <!-- <div style="display:inline;left:270px;position:relative">
-                    <el-button style="color:#A9A9A9" type="text">按时间倒序</el-button>
-                    <el-divider direction="vertical" />
-                    <el-button style="color:#A9A9A9" type="text">按时间正序</el-button>
-                  </div> -->
                 </div>
 
                 <div>
@@ -455,7 +452,7 @@ export default {
   methods: {
     // 根据作者id获取粉丝数
     getFansCountByUserId(authorId) {
-      followApi.getFansByUserId(authorId).then(response => {
+      followApi.getFansCountByUserId(authorId).then(response => {
         this.fansCount = response.data.data.count;
       });
     },

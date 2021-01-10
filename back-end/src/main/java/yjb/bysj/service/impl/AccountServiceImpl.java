@@ -1,6 +1,7 @@
 package yjb.bysj.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import yjb.bysj.common_utils.JwtUtils;
 import yjb.bysj.common_utils.Res;
@@ -27,10 +28,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void userRegist(Account account) {
 
-        // 将当前时间传入数据库字段create/update_on
+        // 将当前时间传入数据库字段create/update_onz
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         account.setAvatar("https://edu-952.oss-cn-hangzhou.aliyuncs.com/default.jpg"); // 设置默认头像
         account.setCreateOn(timestamp);
+        account.setLastLogin(timestamp);
         account.setUpdateOn(timestamp);
         account.setStatus(0); // 设置账号状态
         account.setPermission(0);

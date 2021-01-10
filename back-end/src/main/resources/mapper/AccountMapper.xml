@@ -31,8 +31,8 @@
 
 <!--    用户注册-->
     <insert id="userRegist" parameterType="yjb.bysj.entity.Account">
-        insert into account (username, password, phone, avatar, status, create_on, update_on)
-        values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{permission,jdbcType=INTEGER},#{createOn,jdbcType=TIMESTAMP},#{createOn,jdbcType=TIMESTAMP})
+        insert into account (username, password, phone, avatar, status, permission, last_login, create_on, update_on)
+        values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{permission,jdbcType=INTEGER},#{lastLogin,jdbcType=TIMESTAMP},#{createOn,jdbcType=TIMESTAMP},#{updateOn,jdbcType=TIMESTAMP})
     </insert>
 
 <!--    检查用户名是否存在-->

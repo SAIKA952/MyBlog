@@ -114,4 +114,10 @@ public class BlogServiceImpl implements BlogService {
         List<Blog> blogs = blogMapper.getChampion();
         return blogs;
     }
+
+    @Override
+    public Integer getAllBlogsViewsCountByUserId(Integer userId) {
+        Integer count = blogMapper.getAllBlogsViewsCountByUserId(userId);
+        return count;
+    }
 }

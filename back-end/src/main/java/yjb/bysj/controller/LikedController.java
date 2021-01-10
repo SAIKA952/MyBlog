@@ -1,5 +1,7 @@
 package yjb.bysj.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import yjb.bysj.common_utils.Res;
@@ -88,9 +90,12 @@ public class LikedController {
     }
 
     // 根据用户id查询该用户点赞的文章
-    @GetMapping("/getLikedListByUserId/{userId}")
-    public Res getLikedListByUserId (@PathVariable Integer userId) {
-        List<Liked> likedList = likedService.getLikedListByUserId(userId); // 获取点赞的所有文章
+    @GetMapping("/getLikedListByUserId/{userId}/{page}")
+    public Res getLikedListByUserId (@PathVariable Integer userId, @PathVariable Integer page) {
+        List<Liked> likedList = new ArrayList<>();
+        PageHelper.startPage(page, 8);
+        likedList = likedService.getLikedListByUserId(userId); // 获取点赞的所有文章
+
         List<Index> indexList = new ArrayList<>(); // 保存博客信息
 
         // 根据点赞的文章id，获取文章详情
@@ -128,7 +133,10 @@ public class LikedController {
             indexList.add(index); // 添加到list中返回
         }
 
-        return Res.ok().data("indexList", indexList).data("count", indexList.size());
+        PageInfo pageInfo = new PageInfo(likedList, 5);
+        pageInfo.setList(indexList);
+
+        return Res.ok().data("pageInfo", pageInfo);
     }
 
     // 收藏
@@ -169,9 +177,12 @@ public class LikedController {
     }
 
     // 根据用户id查找该用户收藏的文章
-    @GetMapping("/getCollectListByUserId/{userId}")
-    public Res getCollectListByUserId(@PathVariable Integer userId) {
-        List<Collect> collectList = likedService.getCollectListByUserId(userId);
+    @GetMapping("/getCollectListByUserId/{userId}/{page}")
+    public Res getCollectListByUserId(@PathVariable Integer userId, @PathVariable Integer page) {
+        List<Collect> collectList = new ArrayList<>();
+
+        PageHelper.startPage(page, 8);
+        collectList = likedService.getCollectListByUserId(userId);
         List<Index> indexList = new ArrayList<>();
 
         for(int i = 0; i < collectList.size(); i++) {
@@ -210,7 +221,10 @@ public class LikedController {
             indexList.add(index);
         }
 
-        return Res.ok().data("collectList", indexList).data("count", indexList.size());
+        PageInfo pageInfo = new PageInfo(collectList, 5);
+        pageInfo.setList(indexList);
+
+        return Res.ok().data("pageInfo", pageInfo);
     }
 
     // 根据用户id获取用户收藏的文章数
@@ -230,15 +244,7 @@ public class LikedController {
     // 根据用户id统计该用户的所有文章获取的点赞数（主页显示）
     @GetMapping("/getAllBlogsLikedCountByUserId/{userId}")
     public Res getAllBlogsLikedCountByUserId(@PathVariable Integer userId) {
-
-        // 先获取该用户的所有文章
-        List<Blog> blogList = blogService.getAllBlogsByUserId(userId);
-
-        // 遍历该用户的所有文章，调用方法获取点赞数
-        int count = 0;
-        for (Blog blog : blogList) {
-            count += likedService.getLikedCountByBlogId(blog.getId());
-        }
+        Integer count = likedService.getAllBlogsLikedCountByUserId(userId);
 
         return Res.ok().data("count", count);
     }
@@ -246,15 +252,7 @@ public class LikedController {
     // 根据用户id统计该用户的所有文章获取的收藏数（主页显示）
     @GetMapping("/getAllBlogsCollectCountByUserId/{userId}")
     public Res getAllBlogsCollectCountByUserId(@PathVariable Integer userId) {
-
-        // 先获取该用户的所有博客
-        List<Blog> blogList = blogService.getAllBlogsByUserId(userId);
-
-        // 遍历所有文章
-        int count = 0;
-        for (Blog blog : blogList) {
-            count += likedService.getCollectCountByBlogId(blog.getId());
-        }
+        Integer count = likedService.getAllBlogsCollectCountByUserId(userId);
 
         return Res.ok().data("count", count);
     }

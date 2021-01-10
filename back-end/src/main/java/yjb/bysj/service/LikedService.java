@@ -41,4 +41,8 @@ public interface LikedService {
     Integer getLikedCountByUserId(Integer userId);
 
     Integer getCollectCountByUserId(Integer userId);
+
+    Integer getAllBlogsCollectCountByUserId(Integer userId);
+
+    Integer getAllBlogsLikedCountByUserId(Integer userId);
 }

@@ -120,4 +120,19 @@ public class LikedServiceImpl implements LikedService {
         Integer count = likedMapper.getCollectCountByUserId(userId);
         return count;
     }
+
+    // 根据用户id获取该用户的文章被点赞的数量
+    @Override
+    public Integer getAllBlogsLikedCountByUserId(Integer userId) {
+        Integer count = likedMapper.getAllBlogsLikedCountByUserId(userId);
+        return count;
+    }
+
+    // 根据用户id获取该用户的文章被收藏的数量
+    @Override
+    public Integer getAllBlogsCollectCountByUserId(Integer userId) {
+        Integer count = likedMapper.getAllBlogsCollectCountByUserId(userId);
+        return count;
+    }
+
 }

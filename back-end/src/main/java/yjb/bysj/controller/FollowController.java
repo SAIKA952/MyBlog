@@ -66,7 +66,7 @@ public class FollowController {
     }
 
     // 根据用户id查询该用户的粉丝数
-    @GetMapping("/getFansByUserId/{followId}")
+    @GetMapping("/getFansCountByUserId/{followId}")
     public Res getFansByUserId(@PathVariable Integer followId) {
         Integer count = followService.getFansCountByUserId(followId);
 

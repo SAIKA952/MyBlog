@@ -27,6 +27,9 @@ public class Index {
     // 博客内容
     private String blogContent;
 
+    // 内容中的第一张图片地址
+    private String imgURL;
+
     // 博客状态  -2正在审核 -1删除 0未发布（草稿） 1已发布
     private Integer blogStatus;
 

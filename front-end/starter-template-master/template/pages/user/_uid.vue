@@ -2,45 +2,49 @@
   <div style="position:relative;">
     <el-backtop />
     <div style="z-index:1">
+      
       <div style="position:relative;left:20%;width:930px;float:left">
         <br />
         <div style="min-height:865px">
           <br />
           <div v-if="isTargetExist" style="left:110px;position:relative">
-            <div>
-              <div style="float:left">
-                <el-avatar :size="70" :src="userInfo.avatar" />
+            <div v-if="userInfo.id !== loginInfo.id" style="float:left;position:absolute">
+              <el-button
+                v-if="!isUserFollowed"
+                style="left:20px;position:relative;top:-5px"
+                type="primary"
+                round
+                size="mini"
+                @click="followUser()"
+              >关注该用户</el-button>
+              <el-button
+                v-if="isUserFollowed"
+                style="left:20px;position:relative;top:-5px"
+                type="primary"
+                round
+                plain
+                size="mini"
+                @click="followUser()"
+              >√ 已关注</el-button>
+            </div>
+            <div style="text-align:center">
+              <div style="">
+                <el-avatar :size="120" :src="userInfo.avatar" />
               </div>
-              <div style="position:relative;left:20px">
+              <div style="position:relative;top:10px">
                 <div>
-                  <div style="display:inline-block">
-                    <h4 style="font-size:30px;">{{ userInfo.username }}</h4>
-                  </div>
-                  <div v-if="userInfo.id !== loginInfo.id" style="display:inline-block">
-                    <el-button
-                      v-if="!isUserFollowed"
-                      style="left:20px;position:relative;top:-5px"
-                      type="primary"
-                      round
-                      size="mini"
-                      @click="followUser()"
-                    >关注</el-button>
-                    <el-button
-                      v-if="isUserFollowed"
-                      style="left:20px;position:relative;top:-5px"
-                      type="primary"
-                      round
-                      plain
-                      size="mini"
-                      @click="followUser()"
-                    >取消关注</el-button>
+                  <div>
+                    <h4 style="font-size:30px;">{{ userInfo.username }}
+                      <i v-if="userInfo.sex === 1" style="font-size:25px;color:#00BFFF;position:relative" class="el-icon-male" />
+                      <i v-if="userInfo.sex === 0" style="font-size:25px;color:#FFB5C5;position:relative" class="el-icon-female" />
+                    </h4>
                   </div>
                 </div>
                 <div>
                   <p style="font-size:20px">
                     博客：{{ blogCount }}
                     <el-divider direction="vertical" />
-                    喜欢：{{ likedBlogCount }}
+                    喜欢：{{ likedCount }}
                     <el-divider direction="vertical" />
                     收藏：{{ collectCount }}
                     <el-divider direction="vertical" />
@@ -56,7 +60,7 @@
             <br />
 
             <div>
-              <div style="width:75%">
+              <div style="width:75%;float:left">
                 <div v-if="this.showIndex === 1">
                   <el-tabs v-model="blogActiveName">
                     <el-tab-pane name="first">
@@ -203,6 +207,7 @@
                     </el-tab-pane>
                   </el-tabs>
                 </div>
+
                 <div v-if="this.showIndex === 2">
                   <el-tabs v-model="likeActiveName">
                     <el-tab-pane name="first">
@@ -236,11 +241,32 @@
                         </el-card>
                         <br />
                       </div>
-                      <div v-if="isBlogLoading">
+                      <div v-if="!this.likedPageInfo">
                         <div style="text-align:center;height:90px;top:40px;position:relative">
                           <i class="el-icon-loading"></i>
                         </div>
                       </div>
+                      <div
+                        v-if="this.likedPageInfo.hasNextPage"
+                        style="position:relative;left:40%;height:80px;top:10px"
+                      >
+                        <el-button
+                          type="primary"
+                          round
+                          v-if="!this.isLikeLoading"
+                          @click="readMorelikeBlogs(likePage)"
+                        >查看更多</el-button>
+                        <el-button
+                          type="primary"
+                          round
+                          v-if="this.isLikeLoading"
+                          :loading="true"
+                        >加载中...</el-button>
+                      </div>
+                      <div
+                        v-if="this.likedPageInfo.isLastPage"
+                        style="position:relative;left:40%;height:80px;top:10px;color:#A9A9A9"
+                      >没有更多博客了</div>
                     </el-tab-pane>
                     <el-tab-pane name="second">
                       <span slot="label">收藏</span>
@@ -273,11 +299,32 @@
                         </el-card>
                         <br />
                       </div>
-                      <div v-if="isBlogLoading">
+                      <div v-if="!this.collectPageInfo">
                         <div style="text-align:center;height:90px;top:40px;position:relative">
                           <i class="el-icon-loading"></i>
                         </div>
                       </div>
+                      <div
+                        v-if="this.collectPageInfo.hasNextPage"
+                        style="position:relative;left:40%;height:80px;top:10px"
+                      >
+                        <el-button
+                          type="primary"
+                          round
+                          v-if="!this.isCollectLoading"
+                          @click="readMoreCollectBlogs(collectPage)"
+                        >查看更多</el-button>
+                        <el-button
+                          type="primary"
+                          round
+                          v-if="this.isCollectLoading"
+                          :loading="true"
+                        >加载中...</el-button>
+                      </div>
+                      <div
+                        v-if="this.collectPageInfo.isLastPage"
+                        style="position:relative;left:40%;height:80px;top:10px;color:#A9A9A9"
+                      >没有更多博客了</div>
                     </el-tab-pane>
                   </el-tabs>
                 </div>
@@ -376,249 +423,44 @@
                     <el-divider />
                   </div>
                 </div>
-                <!-- <el-tabs v-model="activeName" stretch>
-                  <el-tab-pane name="first">
-                    <span slot="label">文章 {{ blogCount }}</span>
-                    <div>
-                      <div v-for="blog in blogList" :key="blog.id">
-                        <el-card shadow="hover">
-                          <router-link
-                            :to="{ path: '/blog/' + blog.blogId }"
-                            style="text-decoration:none;color:black"
-                          >
-                            <div>
-                              <h3>{{ blog.blogTitle }}</h3>
-                              <el-tag
-                                v-if="blog.blogStatus === -2"
-                                type="info"
-                                style="float:right;"
-                                class="el-icon-warning-outline"
-                              >审核中</el-tag>
-                              <el-tag
-                                v-if="blog.blogStatus === -3"
-                                type="danger"
-                                style="float:right;"
-                                class="el-icon-circle-close"
-                              >审核未通过</el-tag>
-                              <br />
-                              <div style="color:#A9A9A9">{{ blog.blogContent }}</div>
-                            </div>
-                          </router-link>
+                
+              </div>
 
-                          <br />
-                          <div style="color:#A9A9A9">
-                            <i class="el-icon-caret-top">{{ blog.likedCount }} 赞</i>
-                            <el-divider direction="vertical" />
-                            <i class="el-icon-star-off">{{ blog.collectCount }}</i>
-                            <el-divider direction="vertical" />
-                            <i class="el-icon-chat-dot-square">{{ blog.commentsCount }}</i>
-                            <el-divider direction="vertical" />
-                            <i class="el-icon-view">{{ blog.views }}</i>
-                            <el-divider direction="vertical" />
-                            {{ blog.createOn }}
-                          </div>
-                        </el-card>
-                        <br />
-                      </div>
+              <div v-if="isTargetExist" style="left:30px;width:200px;top:36px;float:left;position:relative">
+                <div>
+                  <el-card shadow="hover">
+                    <div id="show1" @click="show(1)">
+                      <p style="float:left" v-if="userInfo.id === loginInfo.id">我</p>
+                      <p style="float:left" v-if="userInfo.id !== loginInfo.id">Ta</p>的文章
                     </div>
-                    <div v-if="!this.blogPageInfo">
-                      <div style="text-align:center;height:90px;top:40px;position:relative">
-                        <i class="el-icon-loading"></i>
-                      </div>
+                    <br />
+                    <div id="show2" @click="show(2)">
+                      <p style="float:left" v-if="userInfo.id === loginInfo.id">我</p>
+                      <p style="float:left" v-if="userInfo.id !== loginInfo.id">Ta</p>
+                      <p>的喜欢/收藏</p>
                     </div>
-                    <div
-                      v-if="this.blogPageInfo.hasNextPage"
-                      style="position:relative;left:40%;height:80px;top:10px"
-                    >
-                      <el-button
-                        type="primary"
-                        round
-                        v-if="!this.isBlogLoading"
-                        @click="readMoreBlogs(blogPage)"
-                      >查看更多</el-button>
-                      <el-button
-                        type="primary"
-                        round
-                        v-if="this.isBlogLoading"
-                        :loading="true"
-                        @click="readMoreBlogs(blogPage)"
-                      >加载中...</el-button>
+                    <br />
+                    <div id="show3" @click="show(3)">
+                      <p style="float:left" v-if="userInfo.id === loginInfo.id">我</p>
+                      <p style="float:left" v-if="userInfo.id !== loginInfo.id">Ta</p>
+                      <p>的关注/粉丝</p>
                     </div>
-                    <div
-                      v-if="this.blogPageInfo.isLastPage"
-                      style="position:relative;left:40%;height:80px;top:10px;color:#A9A9A9"
-                    >没有更多博客了</div>
-                  </el-tab-pane>
-                  <el-tab-pane name="second">
-                    <span slot="label">喜欢 {{ likedBlogCount }}</span>
-                    <div v-for="liked in likedList" :key="liked.id">
-                      <el-card shadow="hover">
-                        <router-link
-                          :to="{ path: '/blog/' + liked.blogId }"
-                          style="text-decoration:none;color:black"
-                        >
-                          <div>
-                            <h3>{{ liked.blogTitle }}</h3>
-                            <br />
-                            <div style="color:#A9A9A9">{{ liked.blogContent }}</div>
-                          </div>
-                        </router-link>
-                        <br />
-                        <div style="color:#A9A9A9">
-                          作者：{{ liked.authorName }}
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-caret-top">{{ liked.likedCount }} 赞</i>
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-star-off">{{ liked.collectCount }}</i>
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-chat-dot-square">{{ liked.commentsCount }}</i>
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-view">{{ liked.views }}</i>
-                          <el-divider direction="vertical" />
-                          {{ liked.createOn }} 赞了这篇文章
-                        </div>
-                      </el-card>
-                      <br />
-                    </div>
-                    <div v-if="isBlogLoading">
-                      <div style="text-align:center;height:90px;top:40px;position:relative">
-                        <i class="el-icon-loading"></i>
-                      </div>
-                    </div>
-                  </el-tab-pane>
-                  <el-tab-pane name="third">
-                    <span slot="label">收藏 {{ collectCount }}</span>
-                    <div v-for="collect in collectList" :key="collect.id">
-                      <el-card shadow="hover">
-                        <router-link
-                          :to="{ path: '/blog/' + collect.blogId }"
-                          style="text-decoration:none;color:black"
-                        >
-                          <div>
-                            <h3>{{ collect.blogTitle }}</h3>
-                            <br />
-                            <div style="color:#A9A9A9">{{ collect.blogContent }}</div>
-                          </div>
-                        </router-link>
-                        <br />
-                        <div style="color:#A9A9A9">
-                          作者：{{ collect.authorName }}
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-caret-top">{{ collect.likedCount }} 赞</i>
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-star-off">{{ collect.collectCount }}</i>
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-chat-dot-square">{{ collect.commentsCount }}</i>
-                          <el-divider direction="vertical" />
-                          <i class="el-icon-view">{{ collect.views }}</i>
-                          <el-divider direction="vertical" />
-                          {{ collect.createOn }} 收藏了这篇文章
-                        </div>
-                      </el-card>
-                      <br />
-                    </div>
-                    <div v-if="isBlogLoading">
-                      <div style="text-align:center;height:90px;top:40px;position:relative">
-                        <i class="el-icon-loading"></i>
-                      </div>
-                    </div>
-                  </el-tab-pane>
-                  <el-tab-pane name="fourth">
-                    <span slot="label">关注 {{ followCount }}</span>
-                    <div v-for="follow in followInfo" :key="follow.id">
-                      <div>
-                        <div>
-                          <router-link
-                            :to="{ path: '/user/' + follow.followId }"
-                            style="text-decoration:none;color:black"
-                          >
-                            <div style="float:left">
-                              <el-avatar :size="50" :src="follow.avatar" />
-                            </div>
-                            <h3 style="left:10px;position:relative">{{ follow.username }}</h3>
-                          </router-link>
-                          <div style="color:#A9A9A9;font-size:14px;left:10px;position:relative">
-                            文章：{{ follow.blogCount }}
-                            <el-divider direction="vertical" />
-                            喜欢：{{ follow.likedCount }}
-                            <el-divider direction="vertical" />
-                            收藏：{{ follow.collectCount }}
-                            <el-divider direction="vertical" />
-                            关注：{{ follow.followCount }}
-                            <el-divider direction="vertical" />
-                            粉丝：{{ follow.fansCount }}
-                          </div>
-                        </div>
-                      </div>
+                    <div id="show4" @click="show(4)" v-if="userInfo.id === loginInfo.id">
                       <el-divider />
+                      <p>草稿箱</p>
                     </div>
-                    <div v-if="isBlogLoading">
-                      <div style="text-align:center;height:90px;top:40px;position:relative">
-                        <i class="el-icon-loading"></i>
-                      </div>
-                    </div>
-                  </el-tab-pane>
-                  <el-tab-pane name="fifth">
-                    <span slot="label">粉丝 {{ fansCount }}</span>
-                    <div v-for="fans in fansList" :key="fans.id">
-                      <div>
-                        <div>
-                          <router-link
-                            :to="{ path: '/user/' + fans.userId }"
-                            style="text-decoration:none;color:black"
-                          >
-                            <div style="float:left">
-                              <el-avatar :size="50" :src="fans.avatar" />
-                            </div>
-                            <h3 style="left:10px;position:relative">{{ fans.username }}</h3>
-                          </router-link>
-                          <div style="color:#A9A9A9;font-size:14px;left:10px;position:relative;">
-                            文章：{{ fans.blogCount }}
-                            <el-divider direction="vertical" />
-                            喜欢：{{ fans.likedCount }}
-                            <el-divider direction="vertical" />
-                            收藏：{{ fans.collectCount }}
-                            <el-divider direction="vertical" />
-                            关注：{{ fans.followCount }}
-                            <el-divider direction="vertical" />
-                            粉丝：{{ fans.fansCount }}
-                          </div>
-                        </div>
-                      </div>
-                      <el-divider />
-                    </div>
-                    <div v-if="isBlogLoading">
-                      <div style="text-align:center;height:90px;top:40px;position:relative">
-                        <i class="el-icon-loading"></i>
-                      </div>
-                    </div>
-                  </el-tab-pane>
-                  <el-tab-pane v-if="this.loginInfo.id === this.userInfo.id" name="sixth">
-                    <span slot="label">草稿箱 {{ draftList.length }}</span>
-                    <div v-for="blog in draftList" :key="blog.id">
-                      <div>
-                        <div>
-                          <router-link
-                            :to="{name: 'write', query: {bid: blog.id, status: 0}}"
-                            style="text-decoration:none;color:black"
-                          >
-                            <h3>{{ blog.title }}</h3>
-                          </router-link>
-                          <br />
-                          <div style="color:#A9A9A9">{{ blog.content }}</div>
-                        </div>
-                        <br />
-                        <div style="color:#A9A9A9">{{ blog.createOn }}</div>
-                      </div>
-                      <el-divider />
-                    </div>
-                    <div v-if="!isBlogLoading">
-                      <div style="text-align:center;height:90px;top:40px;position:relative">
-                        <i class="el-icon-loading"></i>
-                      </div>
-                    </div>
-                  </el-tab-pane>
-                </el-tabs>-->
+                  </el-card>
+                </div>
+                <br />
+
+                <div>
+                  <el-card shadow="hover">
+                    <p>入站时间：{{ userInfo.createOn.substring(0,10) }}</p>
+                    <br />
+                    <p>最近上线：{{ userInfo.lastLogin.substring(0,10) }}</p>
+                  </el-card>
+                </div>
+
               </div>
             </div>
           </div>
@@ -638,7 +480,7 @@
         </div>
       </div>
 
-      <div v-if="isTargetExist" style="left:15%;width:200px;top:50px;float:left;position:relative">
+      <!-- <div v-if="isTargetExist" style="left:15%;width:200px;top:50px;float:left;position:relative">
         <div>
           <el-card shadow="hover">
             <div id="show1" @click="show(1)">
@@ -673,7 +515,7 @@
           </el-card>
         </div>
 
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -725,11 +567,17 @@ export default {
       follow: {}, // 封装关注信息
       isUserFollowed: "", // 用户是否关注对象
       blogPage: 1, // 博客分页的页数
-      hotBlogPage: 1,
+      hotBlogPage: 1, 
+      likePage: 1, // 点赞列表的分页页数
+      collectPage: 1,
       blogPageInfo: "", // 文章的分页信息
       hotBlogPageInfo: "",
+      likedPageInfo: "",
+      collectPageInfo: "",
       isBlogLoading: false, // 是否正在加载博客
-      isHotBlogLoading: false
+      isHotBlogLoading: false,
+      isLikeLoading: false,
+      collectLoading: false
 
     };
   },
@@ -756,6 +604,9 @@ export default {
     hotBlogList(val, oldVal) {
       // 监听博客列表，如果发生变化，isBlogLoading变为false
       this.isHotBlogLoading = false;
+    },
+    likedList(val, oldVal) {
+      this.isLikeLoading = false;
     }
   },
   mounted() {
@@ -785,14 +636,19 @@ export default {
 
       this.getLoginInfo();
 
+      this.getCollectCountByUserId(this.userInfo.id)
+      this.getLikedCountByUserId(this.userInfo.id)
+      this.getBlogCountByUserId(this.userInfo.id);
+      this.getFansCountByUserId(this.userInfo.id)
+      this.getBlogCountByUserId(this.userInfo.id);
+
       this.getAllBlogsByUserId(this.userInfo.id, this.blogPage);
       this.getHotBlogsByUserId(this.userInfo.id, this.hotBlogPage);
-
-      this.getLikedListByUserId(this.userInfo.id);
-      this.getCollectListByUserId(this.userInfo.id);
+      this.getLikedListByUserId(this.userInfo.id, this.likePage);
+      this.getCollectListByUserId(this.userInfo.id, this.collectPage);
       this.getFansListByUserId(this.userInfo.id);
+      this.getFollowCountByUserId(this.userInfo.id)
       this.getFollowListByUserId(this.userInfo.id);
-      this.getBlogCountByUserId(this.userInfo.id);
 
       if (this.userInfo.id === this.loginInfo.id) {
         // 如果当前用户页面是登录用户的用户页面，就查找草稿箱
@@ -839,29 +695,53 @@ export default {
     getFollowListByUserId(userId) {
       followApi.getFollowListByUserId(userId).then(response => {
         this.followInfo = response.data.data.followInfoList;
-        this.followCount = response.data.data.followCount;
       });
     },
     // 根据用户id获取该用户的所有粉丝信息
     getFansListByUserId(followId) {
       followApi.getFansListByUserId(followId).then(response => {
         this.fansList = response.data.data.fansInfoList;
-        this.fansCount = response.data.data.fansCount;
+      });
+    },
+    // 根据用户id获取该用户的关注数
+    getFollowCountByUserId(followId) {
+      followApi.getFollowCountByUserId(followId).then(response => {
+        this.followCount = response.data.data.count
+      });
+    },
+    // 根据用户id获取该用户的粉丝数
+    getFansCountByUserId(followId) {
+      followApi.getFansCountByUserId(followId).then(response => {
+        this.fansCount = response.data.data.count
       });
     },
     // 根据用户id查询该用户收藏的文章
-    getCollectListByUserId(userId) {
-      likedApi.getCollectListByUserId(userId).then(response => {
-        this.collectList = response.data.data.collectList;
-        this.collectCount = response.data.data.count;
+    getCollectListByUserId(userId, collectPage) {
+      likedApi.getCollectListByUserId(userId, collectPage).then(response => {
+        this.collectPageInfo = response.data.data.pageInfo
+        this.collectList = this.collectPageInfo.list
       });
     },
+    // 根据用户id获取该用户收藏的文章数
+    getCollectCountByUserId(userId) {
+      likedApi.getCollectCountByUserId(userId).then(response => {
+        this.collectCount = response.data.data.collectCount
+      })
+    },
+    
     // 根据用户id查询该用户点赞的文章
-    getLikedListByUserId(userId) {
-      likedApi.getLikedListByUserId(userId).then(response => {
-        this.likedList = response.data.data.indexList;
-        this.likedBlogCount = response.data.data.count;
+    getLikedListByUserId(userId, page) {
+      likedApi.getLikedListByUserId(userId, page).then(response => {
+        this.likedPageInfo = response.data.data.pageInfo;
+        
+        this.likedList = this.likedPageInfo.list
       });
+    },
+    // 根据用户id查询该用户点赞的文章数
+    getLikedCountByUserId(userId) {
+      likedApi.getLikedCountByUserId(userId).then(response => {
+        this.likedCount = response.data.data.likedCount
+      })
     },
     // 根据用户id查询该用户草稿箱里的博客
     getDraftByUserId(id) {
@@ -934,6 +814,22 @@ export default {
             response.data.data.pageInfo.list
           );
         });
+    },
+    readMorelikeBlogs(likePage) {
+      this.isLikeLoading = true;
+      this.likePage = this.likePage + 1;
+      likedApi.getLikedListByUserId(this.userInfo.id, this.likePage).then(response => {
+        this.likedPageInfo = response.data.data.pageInfo
+        this.likedList = this.likedList.concat(this.likedPageInfo.list)
+      }) 
+    },
+    readMoreCollectBlogs(collectPage) {
+      this.isCollectLoading = true;
+      this.collectPage = this.collectPage + 1;
+      likedApi.getCollectListByUserId(this.userInfo.id, this.collectPage).then(response => {
+        this.collectPageInfo = response.data.data.pageInfo
+        this.collectList = this.collectList.concat(this.collectPageInfo.list)
+      }) 
     },
     goBack() {
       this.$router.go(-1);

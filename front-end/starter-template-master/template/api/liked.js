@@ -45,16 +45,16 @@ export default {
     })
   },  
   // 根据用户id查询该用户点赞的文章
-  getLikedListByUserId(userId) {
+  getLikedListByUserId(userId, page) {
     return request({
-      url: `/liked/getLikedListByUserId/${userId}`,
+      url: `/liked/getLikedListByUserId/${userId}/${page}`,
       method: 'get'
     })
   },
   // 根据用户id查找该用户收藏的文章
-  getCollectListByUserId(userId) {
+  getCollectListByUserId(userId, page) {
     return request({
-      url: `/liked/getCollectListByUserId/${userId}`,
+      url: `/liked/getCollectListByUserId/${userId}/${page}`,
       method: 'get'
     })
   },
