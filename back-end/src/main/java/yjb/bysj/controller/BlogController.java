@@ -108,8 +108,6 @@ public class BlogController {
             // 从token中获取用户的id，存到blog中的authorId字段
             String id = JwtUtils.getMemberIdByJwtToken(request);
 
-            blog.setComments(0); // 评论数
-            blog.setLikes(0); // 点赞数
             blog.setAuthorId(Integer.parseInt(id)); // 作者id
             blog.setViews(0); // 访问量
             blog.setVersion(0); // 版本号
@@ -359,7 +357,7 @@ public class BlogController {
     @GetMapping("/getAllBlogsViewsCountByUserId/{userId}")
     public Res getAllBlogsViewsCountByUserId(@PathVariable Integer userId) {
         Integer count = blogService.getAllBlogsViewsCountByUserId(userId);
-
+        if (count == null) count = 0;
         return Res.ok().data("count", count);
     }
 

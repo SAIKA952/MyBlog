@@ -1,5 +1,5 @@
 <template>
-  <div style="position:relative;min-height:885px;width:100%;min-width:1100px">
+  <div style="position:relative;min-height:885px;width:100%;min-width:1300px">
     <el-backtop />
     <br />
 
@@ -62,20 +62,20 @@
 
         <!-- 如果是本人，可以看到自己写的并且正在审核/审核失败的文章，别人看不到 -->
         <div v-if="!isBlogLoading">
-          <div style="width:1000px;left:20%;position:relative;float:left" v-if="blog.status === 1 || this.author.id === this.userInfo.id">
-            <el-card shadow="hover">
+          <div style="width:1000px;left:19%;position:relative;float:left" v-if="blog.status === 1 || this.author.id === this.userInfo.id">
+            <el-card shadow="always">
               <br />
-              <div style="left:25px;position:relative;">
+              <div>
                 <div style="width:95%">
                   <h1>{{ blog.title }}</h1>
                 </div>
                 <br />
                 <div class="block" style="position:relative;display:inline;">
                   <div>
-                    <div style="display:inline;position:relative;">
+                    <div style="position:relative;background-color:	#F5F5F5">
 
                       <div>
-                        <p style="font-size:14px;color:#A9A9A9">
+                        <p style="font-size:14px;color:#A9A9A9;position:relative;top:10px;left:20px">
                           作者：{{ author.username }}
                           <el-divider direction="vertical" />
                           发布于：{{ blog.createOn }}
@@ -114,12 +114,12 @@
                 </div>
                 <!-- <div>{{ author.username }}</div> -->
               </div>
+              <br />
               <!-- 预览样式 -->
               <div class="mavonEditor" style="position:relative;z-index:2">
                 <no-ssr>
                   <mavon-editor
-                    :toolbars="markdownOption"
-                    toolbarsBackground="	#F5F5F5"
+                    :toolbarsFlag="false"
                     defaultOpen="preview"
                     :boxShadow="false"
                     :subfield="false"
@@ -343,8 +343,8 @@
         </div>
 
         <div v-if="isBlogLoading">
-          <div style="width:900px;left:23%;position:relative;float:left">
-            <el-card shadow="hover">
+          <div style="width:1000px;left:20%;position:relative;float:left">
+            <el-card shadow="always">
               <div style="text-align:center;height:90px;top:40px;position:relative">
                   <i class="el-icon-loading"></i>
               </div>

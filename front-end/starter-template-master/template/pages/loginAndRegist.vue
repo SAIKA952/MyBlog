@@ -1,7 +1,11 @@
 <template>
-  <div style="position:relative;height:100%;width:100%;">
-    <div style="background-color:#F5F5F5;width:100%;height:100%;position:fixed"/>
-    <div class="m-container" style="position:relative;top:100px;left:35%;width:600px">
+  <div id="bgimg" style="position:relative;height:1000px;width:100%;">
+    <!-- <div style="background-color:#F5F5F5;width:100%;height:100%;position:fixed"/> -->
+    <div class="m-container" style="position:relative;top:200px;left:35%;width:600px">
+      <div style="color:#fffef9;font-size:40px;text-align:center">
+        <p>Welcome to MyBlog!</p>
+      </div>
+      <br />
       <div>
         <el-card shadow="always">
           <div>
@@ -16,6 +20,7 @@
                     label-width="80px"
                   >
                     <div style="text-align:center"><el-avatar :size="100" :src="circleUrl"></el-avatar></div>
+                    
                     <br />
                     <el-form-item label="用户名" prop="username" style="width:80%">
                       <el-input v-model="loginForm.username" prefix-icon="el-icon-user"/>
@@ -40,6 +45,7 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane label="注册" name="second">
+                <div style="text-align:center"><el-avatar :size="100" :src="circleUrl"></el-avatar></div>
                 <br />
                 <div class="m-content">
                   <el-form
@@ -91,6 +97,7 @@ import msgApi from "@/api/msg";
 import cookie from 'js-cookie'
 
 export default {
+  layout: 'blank',
   data() {
     return {
       time: 60,
@@ -287,4 +294,8 @@ export default {
 </script>
 
 <style>
+#bgimg {
+	background:url(https://edu-952.oss-cn-hangzhou.aliyuncs.com/wallhaven-3zzzpy.png);
+	background-size:cover
+}
 </style>

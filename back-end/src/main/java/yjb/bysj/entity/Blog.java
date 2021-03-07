@@ -16,10 +16,6 @@ public class Blog {
 
     private String content;
 
-    private Integer comments;
-
-    private Integer likes;
-
     private Integer views;
 
     private Integer status;

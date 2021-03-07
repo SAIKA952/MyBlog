@@ -28,8 +28,8 @@
 
 <!--    博客提交-->
     <insert id="submitBlog" parameterType="yjb.bysj.entity.Blog">
-        insert into blog(author_id, title, views, status, version, type, content, comments, likes, create_on, update_on)
-        values(#{authorId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{comments,jdbcType=INTEGER}, #{likes,jdbcType=INTEGER}, #{createOn,jdbcType=TIMESTAMP},#{updateOn,jdbcType=TIMESTAMP})
+        insert into blog(author_id, title, views, status, version, type, content, create_on, update_on)
+        values(#{authorId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{createOn,jdbcType=TIMESTAMP},#{updateOn,jdbcType=TIMESTAMP})
     </insert>
 
 <!--    根据博客id查询博客信息-->
@@ -109,7 +109,7 @@
 
 <!--    获取排行榜数据（取前十条）-->
     <select id="getChampion" parameterType="java.util.List" resultMap="BlogMap">
-        select * from blog order by views desc limit 10
+        select * from blog where status = 1 order by views desc limit 10
     </select>
 
 <!--    根据用户id获取该用户所有文章的浏览量-->

@@ -241,15 +241,16 @@ export default {
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
       const isPNG = file.type === 'image/png'
+      const isGIF = file.type === 'image/gif'
       const isLt10M = file.size / 1024 / 1024 < 10
 
-      if (!isJPG && !isPNG) {
-        this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
+      if (!isJPG && !isPNG && !isGIF) {
+        this.$message.error('上传头像图片只能是 JPG/PNG/GIF 格式!')
       }
       if (!isLt10M) {
         this.$message.error('上传头像图片大小不能超过 10MB!')
       }
-      return isJPG || isPNG && isLt10M
+      return isJPG || isPNG || isGIF && isLt10M
     },
     // 修改用户的密码
     updatePassword() {

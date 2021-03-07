@@ -4,59 +4,67 @@
     <div style="z-index:1">
       
       <div style="position:relative;left:20%;width:930px;float:left">
-        <br />
         <div style="min-height:865px">
-          <br />
           <div v-if="isTargetExist" style="left:110px;position:relative">
-            <div v-if="userInfo.id !== loginInfo.id" style="float:left;position:absolute">
-              <el-button
-                v-if="!isUserFollowed"
-                style="left:20px;position:relative;top:-5px"
-                type="primary"
-                round
-                size="mini"
-                @click="followUser()"
-              >关注该用户</el-button>
-              <el-button
-                v-if="isUserFollowed"
-                style="left:20px;position:relative;top:-5px"
-                type="primary"
-                round
-                plain
-                size="mini"
-                @click="followUser()"
-              >√ 已关注</el-button>
-            </div>
-            <div style="text-align:center">
-              <div style="">
-                <el-avatar :size="120" :src="userInfo.avatar" />
+            <br />
+            <div id="bgimg" style="height:250px">
+              <div v-if="userInfo.id !== loginInfo.id" style="float:left;position:absolute;z-index:1;top:20px">
+                <br />
+                <el-button
+                  v-if="!isUserFollowed"
+                  style="left:20px;position:relative;top:-5px"
+                  type="plain"
+                  round
+                  size="mini"
+                  @click="followUser()"
+                >+ 关注该用户</el-button>
+                <el-button
+                  v-if="isUserFollowed"
+                  style="left:20px;position:relative;top:-5px"
+                  type="plain"
+                  round
+                  plain
+                  size="mini"
+                  @click="followUser()"
+                >√ 已关注</el-button>
+                <!-- <el-button type=""></el-button> -->
               </div>
-              <div style="position:relative;top:10px">
-                <div>
+              <div style="text-align:center;position:relative;height:260px;">
+                <!-- <div style="position:absolute;">
+                  <el-image style="position:relative;height:260px;width:925px" src="https://pic2.zhimg.com/v2-9919949ecaaaf2513bb6e8e8032bb194_r.jpg?source=1940ef5c" fit="cover"></el-image>
+                </div> -->
+                
+                <div style="position:relative;top:30px">
                   <div>
-                    <h4 style="font-size:30px;">{{ userInfo.username }}
-                      <i v-if="userInfo.sex === 1" style="font-size:25px;color:#00BFFF;position:relative" class="el-icon-male" />
-                      <i v-if="userInfo.sex === 0" style="font-size:25px;color:#FFB5C5;position:relative" class="el-icon-female" />
-                    </h4>
+                    <el-avatar :size="120" :src="userInfo.avatar" />
+                  </div>
+                  <div style="position:relative;top:10px">
+                    <div>
+                      <div>
+                        <h4 style="font-size:30px;">{{ userInfo.username }}
+                          <i v-if="userInfo.sex === 1" style="font-size:25px;color:#00BFFF;position:relative" class="el-icon-male" />
+                          <i v-if="userInfo.sex === 0" style="font-size:25px;color:#FFB5C5;position:relative" class="el-icon-female" />
+                        </h4>
+                      </div>
+                    </div>
+                    <div>
+                      <p style="font-size:20px">
+                        博客：{{ blogCount }}
+                        <el-divider direction="vertical" />
+                        喜欢：{{ likedCount }}
+                        <el-divider direction="vertical" />
+                        收藏：{{ collectCount }}
+                        <el-divider direction="vertical" />
+                        关注：{{ followCount }}
+                        <el-divider direction="vertical" />
+                        粉丝：{{ fansCount }}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <p style="font-size:20px">
-                    博客：{{ blogCount }}
-                    <el-divider direction="vertical" />
-                    喜欢：{{ likedCount }}
-                    <el-divider direction="vertical" />
-                    收藏：{{ collectCount }}
-                    <el-divider direction="vertical" />
-                    关注：{{ followCount }}
-                    <el-divider direction="vertical" />
-                    粉丝：{{ fansCount }}
-                  </p>
-                </div>
               </div>
             </div>
-            <!-- <el-divider/> -->
-            <br />
+
             <br />
 
             <div>
@@ -74,18 +82,6 @@
                             >
                               <div>
                                 <h3>{{ blog.blogTitle }}</h3>
-                                <!-- <el-tag
-                                  v-if="blog.blogStatus === -2"
-                                  type="info"
-                                  style="float:right;"
-                                  class="el-icon-warning-outline"
-                                >审核中</el-tag>
-                                <el-tag
-                                  v-if="blog.blogStatus === -3"
-                                  type="danger"
-                                  style="float:right;"
-                                  class="el-icon-circle-close"
-                                >审核未通过</el-tag> -->
                                 <br />
                                 <div style="color:#A9A9A9">{{ blog.blogContent }}</div>
                               </div>
@@ -145,18 +141,6 @@
                             >
                               <div>
                                 <h3>{{ blog.blogTitle }}</h3>
-                                <!-- <el-tag
-                                  v-if="blog.blogStatus === -2"
-                                  type="info"
-                                  style="float:right;"
-                                  class="el-icon-warning-outline"
-                                >审核中</el-tag>
-                                <el-tag
-                                  v-if="blog.blogStatus === -3"
-                                  type="danger"
-                                  style="float:right;"
-                                  class="el-icon-circle-close"
-                                >审核未通过</el-tag> -->
                                 <br />
                                 <div style="color:#A9A9A9">{{ blog.blogContent }}</div>
                               </div>
@@ -403,7 +387,7 @@
                     </el-tab-pane>
                   </el-tabs>
                 </div>
-                <div v-if="this.showIndex === 4">
+                <div v-if="this.showIndex === 4"> 
                   <br />
                   <div v-for="blog in draftList" :key="blog.id">
                     <div>
@@ -426,9 +410,9 @@
                 
               </div>
 
-              <div v-if="isTargetExist" style="left:30px;width:200px;top:36px;float:left;position:relative">
+              <div v-if="isTargetExist" style="left:30px;width:200px;top:10px;float:left;position:relative">
                 <div>
-                  <el-card shadow="hover">
+                  <el-card shadow="always">
                     <div id="show1" @click="show(1)">
                       <p style="float:left" v-if="userInfo.id === loginInfo.id">我</p>
                       <p style="float:left" v-if="userInfo.id !== loginInfo.id">Ta</p>的文章
@@ -454,7 +438,7 @@
                 <br />
 
                 <div>
-                  <el-card shadow="hover">
+                  <el-card shadow="always">
                     <p>入站时间：{{ userInfo.createOn.substring(0,10) }}</p>
                     <br />
                     <p>最近上线：{{ userInfo.lastLogin.substring(0,10) }}</p>
@@ -479,43 +463,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div v-if="isTargetExist" style="left:15%;width:200px;top:50px;float:left;position:relative">
-        <div>
-          <el-card shadow="hover">
-            <div id="show1" @click="show(1)">
-              <p style="float:left" v-if="userInfo.id === loginInfo.id">我</p>
-              <p style="float:left" v-if="userInfo.id !== loginInfo.id">Ta</p>的文章
-            </div>
-            <br />
-            <div id="show2" @click="show(2)">
-              <p style="float:left" v-if="userInfo.id === loginInfo.id">我</p>
-              <p style="float:left" v-if="userInfo.id !== loginInfo.id">Ta</p>
-              <p>的喜欢/收藏</p>
-            </div>
-            <br />
-            <div id="show3" @click="show(3)">
-              <p style="float:left" v-if="userInfo.id === loginInfo.id">我</p>
-              <p style="float:left" v-if="userInfo.id !== loginInfo.id">Ta</p>
-              <p>的关注/粉丝</p>
-            </div>
-            <div id="show4" @click="show(4)" v-if="userInfo.id === loginInfo.id">
-              <el-divider />
-              <p>草稿箱</p>
-            </div>
-          </el-card>
-        </div>
-        <br />
-
-        <div>
-          <el-card shadow="hover">
-            <p>入站时间：{{ userInfo.createOn.substring(0,10) }}</p>
-            <br />
-            <p>最近上线：{{ userInfo.lastLogin.substring(0,10) }}</p>
-          </el-card>
-        </div>
-
-      </div> -->
     </div>
   </div>
 </template>
@@ -869,5 +816,9 @@ export default {
 #show3:hover,
 #show4:hover {
   color: black
+}
+#bgimg {
+	background:url(https://edu-952.oss-cn-hangzhou.aliyuncs.com/322.png);
+	background-size:100%
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-width:1300px">
     <el-backtop />
     <div style="position:relative;left:16%;top:20px;width:1000px;float:left;">
       <div v-if="isPageLoading">
@@ -13,6 +13,10 @@
       </div>
 
       <div v-if="!isPageLoading">
+        <div style="position:relative;">
+          <el-image style="width:1000px;height:400px" src="https://edu-952.oss-cn-hangzhou.aliyuncs.com/wallhaven-k7787d.jpg" fit="cover"></el-image>
+        </div>
+        <br />
         <div>
           <div v-for="index in indexList" :key="index.id">
             <el-card shadow="hover">
@@ -79,7 +83,7 @@
 
       <div v-if="accountInfo.id > 0">
         <div>
-          <el-card shadow="hover">
+          <el-card shadow="always">
             <div>
               <div style="float:left;">
                 <el-avatar :size="40" :src="accountInfo.avatar" />
@@ -125,7 +129,7 @@
 
       <div v-if="!accountInfo">
         <div>
-          <el-card shadow="hover">
+          <el-card shadow="always">
             <div style="text-align:center;color:#A9A9A9">
               <p>
                 <i class="el-icon-warning-outline"></i> 请登录
@@ -138,7 +142,7 @@
       <br />
       <div>
         <div>
-          <el-card shadow="hover">
+          <el-card shadow="always">
             <P style="color:	#8B008B;text-align:center"><i class="el-icon-trophy"></i> 排行榜</P>
             <br />
             <div v-if="!isChampionLoading">
